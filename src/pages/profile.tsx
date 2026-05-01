@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useParams, useLocation } from "wouter";
-import { useAppStore } from "../lib/store";
 import { ProfileModal } from "../components/profile/profile-modal";
 import { Button } from "../components/ui/button";
 

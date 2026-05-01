@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useAppStore } from "../../lib/store";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "../ui/card";
 import { Badge } from "../ui/badge";

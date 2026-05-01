@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "../ui/button";
 import { useAppStore } from "../../lib/store";
-import { Bell, Flame, MessageSquare, Menu, X } from "lucide-react";
+import { Bell, Flame, MessageSquare, Menu } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
   Popover,
