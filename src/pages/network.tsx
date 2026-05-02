@@ -46,6 +46,28 @@ export default function Network() {
     setProfileMode(mode);
   };
 
+  const getMatchExplanation = (otherUser: typeof users[number]) => {
+    const sharedUnits = (currentUser.units || []).filter(unit =>
+      (otherUser.units || []).includes(unit)
+    );
+
+    const sharedStudyTimes = (currentUser.studyTimes || []).filter(time =>
+      (otherUser.studyTimes || []).includes(time)
+    );
+
+    const currentGoalWords = (currentUser.goal || "").toLowerCase().split(" ");
+    const otherGoalWords = (otherUser.goal || "").toLowerCase().split(" ");
+    const sharedGoalWords = currentGoalWords.filter(word =>
+      word.length > 3 && otherGoalWords.includes(word)
+    );
+
+    return {
+      sharedUnits,
+      sharedStudyTimes,
+      sharedGoalWords,
+    };
+  };
+
   return (
     <div className="container mx-auto p-4 md:p-6 max-w-7xl">
       <div className="mb-6">
@@ -137,10 +159,36 @@ export default function Network() {
                           {u.match}%
                         </div>
                       </TooltipTrigger>
-                      <TooltipContent className="max-w-[260px] text-center">
-                        <p className="text-xs">
-                          Based on your bios, study goals, challenges, study times, and enrolled units, this person is a {u.match}% match with you.
-                        </p>
+                      <TooltipContent className="max-w-[280px] text-left">
+                        {(() => {
+                          const match = getMatchExplanation(u);
+                          return (
+                            <div className="space-y-1.5">
+                              <p className="font-semibold">{u.match}% match</p>
+                              <p>
+                                Matched using shared enrolled units, preferred study times, and similar study goals.
+                              </p>
+                              {match.sharedUnits.length > 0 && (
+                                <p>
+                                  <span className="font-semibold">Shared units:</span>{" "}
+                                  {match.sharedUnits.join(", ")}
+                                </p>
+                              )}
+                              {match.sharedStudyTimes.length > 0 && (
+                                <p>
+                                  <span className="font-semibold">Shared study times:</span>{" "}
+                                  {match.sharedStudyTimes.join(", ")}
+                                </p>
+                              )}
+                              {match.sharedGoalWords.length > 0 && (
+                                <p>
+                                  <span className="font-semibold">Similar goal keywords:</span>{" "}
+                                  {match.sharedGoalWords.join(", ")}
+                                </p>
+                              )}
+                            </div>
+                          );
+                        })()}
                       </TooltipContent>
                     </Tooltip>
                   </div>
@@ -237,10 +285,36 @@ export default function Network() {
                           {u.match}%
                         </div>
                       </TooltipTrigger>
-                      <TooltipContent className="max-w-[260px] text-center">
-                        <p className="text-xs">
-                          Based on your bios, study goals, challenges, study times, and enrolled units, this person is a {u.match}% match with you.
-                        </p>
+                      <TooltipContent className="max-w-[280px] text-left">
+                        {(() => {
+                          const match = getMatchExplanation(u);
+                          return (
+                            <div className="space-y-1.5">
+                              <p className="font-semibold">{u.match}% match</p>
+                              <p>
+                                Matched using shared enrolled units, preferred study times, and similar study goals.
+                              </p>
+                              {match.sharedUnits.length > 0 && (
+                                <p>
+                                  <span className="font-semibold">Shared units:</span>{" "}
+                                  {match.sharedUnits.join(", ")}
+                                </p>
+                              )}
+                              {match.sharedStudyTimes.length > 0 && (
+                                <p>
+                                  <span className="font-semibold">Shared study times:</span>{" "}
+                                  {match.sharedStudyTimes.join(", ")}
+                                </p>
+                              )}
+                              {match.sharedGoalWords.length > 0 && (
+                                <p>
+                                  <span className="font-semibold">Similar goal keywords:</span>{" "}
+                                  {match.sharedGoalWords.join(", ")}
+                                </p>
+                              )}
+                            </div>
+                          );
+                        })()}
                       </TooltipContent>
                     </Tooltip>
                   </motion.div>

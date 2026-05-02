@@ -4,11 +4,12 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
+import { Checkbox } from "../components/ui/checkbox";
 import { useAppStore, type SocialLinks } from "../lib/store";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Badge } from "../components/ui/badge";
-import { X, Twitter, Github, Linkedin, Globe } from "lucide-react";
+import { X, Twitter, Github, Linkedin, Globe, Lock } from "lucide-react";
 
 const STUDY_TIMES = ["Early Morning", "Morning", "Afternoon", "Evening", "Late Night"];
 const TIMEZONES = [
@@ -33,6 +34,8 @@ export default function Onboarding() {
   const [completedUnits, setCompletedUnits] = useState<string[]>([]);
 
   const [socialLinks, setSocialLinks] = useState<SocialLinks>({});
+
+  const [isPrivate, setIsPrivate] = useState(false);
 
   const handleAddUnit = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && unitInput.trim()) {
@@ -74,6 +77,7 @@ export default function Onboarding() {
       units,
       completedUnits,
       socialLinks,
+      isPrivate
     });
     setLocation("/dashboard");
   };
@@ -209,6 +213,23 @@ export default function Onboarding() {
                   <Input placeholder="Personal website URL" value={socialLinks.website || ""}
                     onChange={e => setSocialLinks({ ...socialLinks, website: e.target.value })} />
                 </div>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 p-3 border rounded-lg bg-muted/30">
+              <Checkbox
+                id="private-toggle"
+                checked={isPrivate}
+                onCheckedChange={(c) => setIsPrivate(!!c)}
+                className="mt-1"
+              />
+              <div className="flex-1">
+                <Label htmlFor="private-toggle" className="cursor-pointer flex items-center gap-1.5">
+                  <Lock className="w-3.5 h-3.5" /> Private profile
+                </Label>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Only friends can see your bio, goal, challenges, units, and social links.
+                </p>
               </div>
             </div>
 

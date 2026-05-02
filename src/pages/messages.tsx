@@ -118,12 +118,12 @@ export default function Messages() {
   const activeConvInfo = activeConv ? getConvDisplayInfo(activeConv) : null;
 
   return (
-    <div className="container mx-auto p-0 md:p-4 max-w-6xl h-[calc(100vh-3.5rem)] flex flex-col">
-      <div className="flex flex-1 overflow-hidden md:border rounded-lg bg-card md:shadow-sm">
+    <div className="container mx-auto p-0 md:p-4 max-w-6xl h-full min-h-0 flex flex-col overflow-hidden">
+      <div className="flex flex-1 min-h-0 overflow-hidden md:border rounded-lg bg-card md:shadow-sm">
 
         {/* Left Pane - List */}
         {showList && (
-          <div className="w-full md:w-80 flex flex-col border-r bg-background/50 shrink-0">
+          <div className="w-full md:w-80 flex flex-col min-h-0 border-r bg-background/50 shrink-0">
             <div className="p-4 border-b bg-card flex justify-between items-center shrink-0">
               <h2 className="font-serif text-xl">Messages</h2>
               <Button variant="ghost" size="icon" onClick={() => setIsGroupModalOpen(true)} aria-label="New group chat">
@@ -131,7 +131,7 @@ export default function Messages() {
               </Button>
             </div>
 
-            <ScrollArea className="flex-1">
+            <ScrollArea className="flex-1 min-h-0">
               <div className="p-3 space-y-4">
 
                 {/* Friend Requests */}
@@ -248,7 +248,7 @@ export default function Messages() {
 
         {/* Right Pane - Chat */}
         {showChat && (
-          <div className="flex-1 flex flex-col bg-card">
+          <div className="flex-1 min-h-0 flex flex-col bg-card">
             {activeConvId && activeConv && activeConvInfo ? (
               <>
                 <div className="h-16 border-b flex items-center px-4 gap-3 shrink-0">
@@ -274,7 +274,7 @@ export default function Messages() {
                   )}
                 </div>
 
-                <ScrollArea className="flex-1 p-4">
+                <ScrollArea className="flex-1 min-h-0 p-4">
                   <div className="space-y-4">
                     {activeConv.messages.length === 0 ? (
                       <div className="text-center text-muted-foreground text-sm mt-10">

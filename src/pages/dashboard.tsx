@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import { Button } from "../components/ui/button";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../components/ui/tooltip";
+import { HelpCircle } from "lucide-react";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
@@ -32,7 +34,7 @@ export default function Dashboard() {
     <motion.div 
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="min-h-[calc(100vh-3.5rem)] flex flex-col items-center justify-center p-6 space-y-16"
+      className="h-full flex flex-col items-center justify-center p-6 space-y-16 overflow-hidden"
     >
       <div className="text-center space-y-6">
         <h1 className="font-serif text-7xl md:text-9xl font-light text-foreground/90 tracking-tight">
@@ -98,7 +100,21 @@ export default function Dashboard() {
           <CardContent>
              <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-sm">Level</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sm">Level</span>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <HelpCircle className="w-3.5 h-3.5 text-muted-foreground cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-[260px] text-left">
+                      <div className="space-y-1">
+                        <p className="font-semibold">How levelling works</p>
+                        <p>Earn XP by joining sessions, hosting sessions, making friends, and leaving feedback.</p>
+                        <p>Every 200 XP increases your level.</p>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
                 <span className="font-medium">{currentUser.level}</span>
               </div>
               <div className="flex justify-between items-center">

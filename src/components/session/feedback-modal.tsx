@@ -45,8 +45,6 @@ export function FeedbackModal({ sessionId, mode, open, onClose }: FeedbackModalP
     ? Math.round(Object.values(ratings).reduce((a, b) => a + b, 0) / Object.values(ratings).length)
     : 0;
 
-  const isFacilitatedParticipant = mode === "participant" && session.style === "Facilitated";
-
   const handleSubmit = () => {
     if (mode === "participant") {
       addFeedback(session.id, averageScore, comment.trim() || undefined);
@@ -90,11 +88,17 @@ export function FeedbackModal({ sessionId, mode, open, onClose }: FeedbackModalP
             </div>
           ))}
 
-          {isFacilitatedParticipant && (
+          {mode === "participant" && (
             <div className="space-y-2">
               <Label htmlFor="feedback-comment" className="text-sm">
-                Additional feedback for the facilitator <span className="text-muted-foreground font-normal">(optional, anonymous)</span>
+                Anonymous feedback <span className="text-muted-foreground font-normal">(optional)</span>
               </Label>
+
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Feedback is optional but highly recommended to improve the quality of teaching and learning sessions.
+                All feedback is anonymous.
+              </p>
+
               <Textarea
                 id="feedback-comment"
                 value={comment}

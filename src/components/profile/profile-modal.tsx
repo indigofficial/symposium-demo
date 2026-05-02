@@ -36,6 +36,21 @@ export function ProfileModal({ userId, mode = "default", open, onOpenChange }: P
   if (!user || !currentUser) return null;
 
   const matchPercent = getMatchPercentage(user.id);
+
+  const sharedUnits = (currentUser.units || []).filter(unit =>
+  (user.units || []).includes(unit)
+  );
+
+  const sharedStudyTimes = (currentUser.studyTimes || []).filter(time =>
+    (user.studyTimes || []).includes(time)
+  );
+
+  const currentGoalWords = (currentUser.goal || "").toLowerCase().split(" ");
+  const otherGoalWords = (user.goal || "").toLowerCase().split(" ");
+  const sharedGoalWords = currentGoalWords.filter(word =>
+    word.length > 3 && otherGoalWords.includes(word)
+  );
+
   const isSelf = currentUser.id === user.id;
   const isFriend = currentUser.friends?.includes(user.id);
   const friendCount = (user.friends || []).length;
@@ -113,10 +128,31 @@ export function ProfileModal({ userId, mode = "default", open, onOpenChange }: P
                   <span className="text-[10px] uppercase font-bold text-primary/80 tracking-wider">Match</span>
                 </div>
               </TooltipTrigger>
-              <TooltipContent className="max-w-[260px] text-center">
-                <p className="text-xs">
-                  Based on your bios, study goals, challenges, study times, and enrolled units, this person is a {matchPercent}% match with you.
-                </p>
+              <TooltipContent className="max-w-[280px] text-left">
+                <div className="space-y-1.5">
+                  <p className="font-semibold">{matchPercent}% match</p>
+                  <p>
+                    Matched using shared enrolled units, preferred study times, and similar study goals.
+                  </p>
+                  {sharedUnits.length > 0 && (
+                    <p>
+                      <span className="font-semibold">Shared units:</span>{" "}
+                      {sharedUnits.join(", ")}
+                    </p>
+                  )}
+                  {sharedStudyTimes.length > 0 && (
+                    <p>
+                      <span className="font-semibold">Shared study times:</span>{" "}
+                      {sharedStudyTimes.join(", ")}
+                    </p>
+                  )}
+                  {sharedGoalWords.length > 0 && (
+                    <p>
+                      <span className="font-semibold">Similar goal keywords:</span>{" "}
+                      {sharedGoalWords.join(", ")}
+                    </p>
+                  )}
+                </div>
               </TooltipContent>
             </Tooltip>
           )}
