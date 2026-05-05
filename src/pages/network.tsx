@@ -13,17 +13,19 @@ export default function Network() {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [profileMode, setProfileMode] = useState<"default" | "network">("default");
   const [unitFilter, setUnitFilter] = useState("All");
+  const [displayCount, setDisplayCount] = useState<number>(6);
 
   if (!currentUser) return null;
 
   const hidden = new Set([...removedNetworkUsers, ...blockedUsers]);
   const eligibleUsers = users.filter(u => u.id !== currentUser.id && !hidden.has(u.id));
+  const friendSet = new Set(currentUser.friends || []);
 
   // Calculate match scores for web visualization
   const webUsers = eligibleUsers
     .map(u => ({ ...u, match: getMatchPercentage(u.id) }))
     .sort((a, b) => b.match - a.match)
-    .slice(0, 8); // top 8 matches
+    .slice(0, displayCount === -1 ? undefined : displayCount);
 
   // Friends list
   const friends = (currentUser.friends || [])
@@ -88,21 +90,38 @@ export default function Network() {
           </Card>
 
           <Card className="bg-card shadow-sm border-card-border overflow-hidden relative min-h-[500px] flex items-center justify-center">
+            {/* Display count dropdown */}
+            <div className="absolute top-3 right-3 z-20">
+              <Select value={String(displayCount)} onValueChange={(v) => setDisplayCount(Number(v))}>
+                <SelectTrigger className="w-[130px] h-8 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="6">Top 6 Matches</SelectItem>
+                  <SelectItem value="12">Top 12 Matches</SelectItem>
+                  <SelectItem value="18">Top 18 Matches</SelectItem>
+                  <SelectItem value="-1">All Matches</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             {/* SVG Network Visualization */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <svg width="100%" height="100%" viewBox="-300 -300 600 600" className="opacity-50">
+              <svg width="100%" height="100%" viewBox="-300 -300 600 600">
                 {webUsers.map((u, i) => {
                   const angle = (i * (360 / webUsers.length)) * (Math.PI / 180);
-                  const radius = 200 - (u.match - 40); // Closer if higher match
+                  const radius = 200 - (u.match - 40);
                   const x = Math.cos(angle) * radius;
                   const y = Math.sin(angle) * radius;
+                  const isFriend = friendSet.has(u.id);
                   return (
                     <line
                       key={`line-${u.id}`}
                       x1="0" y1="0" x2={x} y2={y}
-                      stroke="currentColor"
-                      strokeWidth="1"
-                      strokeDasharray="4 4"
+                      stroke={isFriend ? "var(--color-primary, #c1836a)" : "currentColor"}
+                      strokeWidth={isFriend ? 3 : 1}
+                      strokeDasharray={isFriend ? "none" : "4 4"}
+                      opacity={isFriend ? 0.85 : 0.45}
                     />
                   );
                 })}

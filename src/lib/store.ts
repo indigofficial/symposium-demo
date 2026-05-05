@@ -674,28 +674,34 @@ export const useAppStore = create<AppState>()(
 
         if (!currentUser || !otherUser) return 40;
 
-        let score = 40; // Base score
+        // Deterministic per-pair variance (0–18 pts) based on both user IDs
+        const pairKey = [currentUser.id, otherUser.id].sort().join("");
+        const idHash = pairKey.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
+        const pairVariance = idHash % 19; // 0–18
 
-        // Shared units (up to 40 pts)
+        let score = 30 + pairVariance; // Base score now varies 30–48
+
+        // Shared units (up to 36 pts, 12 per unit)
         const sharedUnits = (currentUser.units || []).filter(u => (otherUser.units || []).includes(u));
         if (sharedUnits.length > 0) {
-          score += Math.min(40, sharedUnits.length * 20);
+          score += Math.min(36, sharedUnits.length * 12);
         }
 
-        // Study time overlap (up to 10 pts)
+        // Study time overlap (up to 12 pts)
         const sharedTimes = (currentUser.studyTimes || []).filter(t => (otherUser.studyTimes || []).includes(t));
-        if (sharedTimes.length > 0) {
-          score += 10;
-        }
+        score += Math.min(12, sharedTimes.length * 6);
 
-        // Goals/challenges overlap (up to 10 pts) - simple keyword match
+        // Goals/challenges overlap (up to 8 pts) - simple keyword match
         const myGoalWords = (currentUser.goal || "").toLowerCase().split(" ");
         const otherGoalWords = (otherUser.goal || "").toLowerCase().split(" ");
         const sharedWords = myGoalWords.filter(w => w.length > 3 && otherGoalWords.includes(w));
+        if (sharedWords.length > 0) score += 8;
 
-        if (sharedWords.length > 0) score += 10;
+        // Level proximity bonus (up to 6 pts) — closer levels = more in common
+        const levelDiff = Math.abs(currentUser.level - otherUser.level);
+        score += Math.max(0, 6 - levelDiff * 2);
 
-        return Math.min(100, score);
+        return Math.min(99, Math.max(32, score));
       },
 
       addXp: (amount, reason) =>
