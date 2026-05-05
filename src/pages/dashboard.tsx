@@ -47,7 +47,7 @@ export default function Dashboard() {
 
       <div className="w-full max-w-5xl">
         <div className="w-full border border-border rounded-lg px-3 sm:px-6 py-2 text-center text-[11px] sm:text-xs text-muted-foreground bg-muted/20">
-          You are connected to the University of X Moodle integrated Learning and Networking System
+          You are connected to the University of X Learning Management System
         </div>
       </div>
             
