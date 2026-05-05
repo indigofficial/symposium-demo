@@ -159,7 +159,7 @@ export function HostSessionModal({ open, onOpenChange }: HostSessionModalProps) 
                   {objectives.map((obj, i) => (
                     <li key={i} className="flex justify-between items-center text-sm bg-muted/50 px-3 py-2 rounded-md">
                       <span>{obj}</span>
-                      <button onClick={() => removeObjective(i)} className="text-muted-foreground hover:text-foreground">
+                      <button onClick={() => removeObjective(i)} className="text-muted-foreground hover:text-foreground cursor-pointer">
                         <X className="h-4 w-4" />
                       </button>
                     </li>

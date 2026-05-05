@@ -311,6 +311,22 @@ const generateMockSessions = (): Session[] => [
     status: "scheduled",
     scheduledFor: new Date(Date.now() + 172800000).toISOString(),
     hostLevel: 3,
+  },
+  {
+    id: "session_5",
+    title: "COMP1010 Algorithm Deep Dive",
+    hostId: "user_6",
+    hostName: "Fiona Garcia",
+    style: "Facilitated",
+    unitCode: "COMP1010",
+    objectives: ["Sorting algorithms", "Time complexity analysis", "Recursion fundamentals"],
+    participants: ["user_1", "user_3"],
+    interestedUsers: [],
+    status: "active",
+    hostTeachingScore: 4.8,
+    handsUp: [],
+    everyoneMuted: false,
+    feedbacks: [],
   }
 ];
 

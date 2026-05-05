@@ -22,7 +22,7 @@ interface FeedbackModalProps {
 
 export function FeedbackModal({ sessionId, mode, open, onClose }: FeedbackModalProps) {
   const [, setLocation] = useLocation();
-  const { sessions, clearActiveSession, addFeedback } = useAppStore();
+  const { sessions, clearActiveSession, addFeedback, deleteSession } = useAppStore();
   const session = sessions.find(s => s.id === sessionId);
 
   const [ratings, setRatings] = useState<Record<string, number>>({});
@@ -48,6 +48,9 @@ export function FeedbackModal({ sessionId, mode, open, onClose }: FeedbackModalP
   const handleSubmit = () => {
     if (mode === "participant") {
       addFeedback(session.id, averageScore, comment.trim() || undefined);
+    }
+    if (mode === "host") {
+      deleteSession(session.id);
     }
     clearActiveSession();
     onClose();
