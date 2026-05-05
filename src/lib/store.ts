@@ -358,7 +358,7 @@ export const useAppStore = create<AppState>()(
       sessions: generateMockSessions(),
       conversations: generateMockConversations(),
       matchRequests: [
-        { id: "req_1", fromUserId: "user_3", toUserId: "user_1", status: "pending" }
+        { id: "req_1", fromUserId: "user_3", toUserId: "user_1", status: "pending", note: "Hey! I saw we're both in COMP1010 — want to do the algorithm assignment together?" }
       ],
       removedNetworkUsers: [],
       blockedUsers: [],
@@ -405,6 +405,7 @@ export const useAppStore = create<AppState>()(
                 fromUserId: "user_3",
                 toUserId: user.id,
                 status: "pending",
+                note: "Hey! I saw we're both in COMP1010 — want to do the algorithm assignment together?",
               },
             ],
           }));

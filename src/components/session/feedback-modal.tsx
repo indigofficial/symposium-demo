@@ -49,9 +49,7 @@ export function FeedbackModal({ sessionId, mode, open, onClose }: FeedbackModalP
     if (mode === "participant") {
       addFeedback(session.id, averageScore, comment.trim() || undefined);
     }
-    if (mode === "host") {
-      deleteSession(session.id);
-    }
+    deleteSession(session.id);
     clearActiveSession();
     onClose();
     setLocation("/dashboard");
