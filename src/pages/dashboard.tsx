@@ -36,11 +36,11 @@ export default function Dashboard() {
       animate={{ opacity: 1, y: 0 }}
       className="h-full flex flex-col items-center justify-center p-6 space-y-16 overflow-hidden"
     >
-      <div className="text-center space-y-6">
-        <h1 className="font-serif text-7xl md:text-9xl font-light text-foreground/90 tracking-tight">
+      <div className="text-center space-y-3">
+        <h1 className="text-2xl md:text-4xl font-medium text-muted-foreground tracking-medium">
           {format(time, 'h:mm a')}
         </h1>
-        <h2 className="text-2xl md:text-3xl text-muted-foreground font-medium">
+        <h2 className="text-5xl md:text-5xl text-foreground/90 font-medium">
           {greeting}, {currentUser.firstName}.
         </h2>
       </div>

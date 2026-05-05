@@ -44,14 +44,14 @@ export function Navbar() {
       <Link href="/network">
         <span onClick={() => mobile && setIsMobileMenuOpen(false)} className={`text-sm font-medium hover:text-primary transition-colors cursor-pointer ${location === "/network" ? "text-primary" : "text-muted-foreground"} ${mobile ? "block py-3 text-lg" : ""}`}>Network</span>
       </Link>
-      <Link href="/messages">
+      {/* <Link href="/messages">
         <span onClick={() => mobile && setIsMobileMenuOpen(false)} className={`text-sm font-medium hover:text-primary transition-colors cursor-pointer flex items-center justify-between ${location === "/messages" ? "text-primary" : "text-muted-foreground"} ${mobile ? "py-3 text-lg" : ""}`}>
           Messages
           {mobile && pendingRequests > 0 && (
             <Badge variant="destructive" className="ml-2">{pendingRequests}</Badge>
           )}
         </span>
-      </Link>
+      </Link> */}
     </>
   );
 
@@ -94,7 +94,7 @@ export function Navbar() {
             </SheetContent>
           </Sheet>
 
-          <Link href="/dashboard" className="font-serif font-bold text-xl text-primary flex-shrink-0">
+          <Link href="/dashboard" className="font-serif font-semibold text-xl text-primary flex-shrink-0">
             Symposium
           </Link>
           <nav className="hidden md:flex gap-6 items-center">
@@ -105,7 +105,7 @@ export function Navbar() {
         <div className="flex items-center gap-2 sm:gap-4">
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="ghost" size="sm" className="hidden sm:flex gap-2 px-2 hover:bg-muted/50">
+              <Button variant="ghost" size="sm" className="hidden sm:flex gap-2 px-2 cursor-pointer hover:bg-muted/50">
                 <span className="font-medium text-sm">Lvl {currentUser.level}</span>
                 <div className="flex items-center text-orange-500 bg-orange-500/10 px-1.5 py-0.5 rounded-sm">
                   <Flame className="h-3.5 w-3.5 mr-1" />
@@ -147,7 +147,7 @@ export function Navbar() {
             
             <Popover open={isNotifOpen} onOpenChange={setIsNotifOpen}>
               <PopoverTrigger asChild>
-                <Button variant="ghost" size="icon" className="relative" aria-label="Notifications">
+                <Button variant="ghost" size="icon" className="relative cursor-pointer" aria-label="Notifications">
                   <Bell className="h-5 w-5" />
                   {pendingRequests > 0 && (
                     <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-medium text-destructive-foreground">
