@@ -17,7 +17,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-import { Badge } from "../ui/badge";
+// import { Badge } from "../ui/badge";
 
 export function Navbar() {
   const [location] = useLocation();
