@@ -33,7 +33,7 @@ export function Navbar() {
   );
   const pendingRequests = incomingRequests.length;
 
-  const NavLinks = ({ mobile = false }) => (
+  const renderNavLinks = (mobile = false) => (
     <>
       <Link href="/dashboard">
         <span onClick={() => mobile && setIsMobileMenuOpen(false)} className={`text-sm font-medium hover:text-primary transition-colors cursor-pointer ${location === "/dashboard" ? "text-primary" : "text-muted-foreground"} ${mobile ? "block py-3 text-lg" : ""}`}>Dashboard</span>
@@ -57,8 +57,8 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-14 items-center justify-between px-4">
-        <div className="flex items-center gap-6">
+      <div className="container mx-auto flex h-14 items-center justify-between gap-2 px-3 sm:px-4">
+        <div className="flex min-w-0 items-center gap-3 md:gap-6">
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden -ml-2">
@@ -71,7 +71,7 @@ export function Navbar() {
                 <SheetTitle className="font-serif text-xl text-primary text-left">Symposium</SheetTitle>
               </SheetHeader>
               <div className="py-6 flex flex-col">
-                <NavLinks mobile />
+                {renderNavLinks(true)}
               </div>
               <div className="mt-auto border-t pt-4">
                 <div className="flex items-center justify-between">
@@ -94,15 +94,15 @@ export function Navbar() {
             </SheetContent>
           </Sheet>
 
-          <Link href="/dashboard" className="font-serif font-semibold text-xl text-primary flex-shrink-0">
+          <Link href="/dashboard" className="font-serif font-semibold text-lg sm:text-xl text-primary flex-shrink-0 truncate">
             Symposium
           </Link>
           <nav className="hidden md:flex gap-6 items-center">
-            <NavLinks />
+            {renderNavLinks()}
           </nav>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex min-w-0 items-center gap-1 sm:gap-4">
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="ghost" size="sm" className="hidden sm:flex gap-2 px-2 cursor-pointer hover:bg-muted/50">
@@ -156,7 +156,7 @@ export function Navbar() {
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-80 p-0" align="end">
+              <PopoverContent className="w-[calc(100vw-2rem)] sm:w-80 p-0" align="end">
                 <div className="px-4 py-3 border-b">
                   <h4 className="font-medium">Notifications</h4>
                   <p className="text-xs text-muted-foreground">

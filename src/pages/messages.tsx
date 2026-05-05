@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/
 import { Checkbox } from "../components/ui/checkbox";
 import { ProfileModal } from "../components/profile/profile-modal";
 import { InviteSessionModal } from "../components/messages/invite-session-modal";
+import { useIsMobile } from "../hooks/use-mobile";
 
 export default function Messages() {
   const {
@@ -31,6 +32,7 @@ export default function Messages() {
   const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
   const [isInviteOpen, setIsInviteOpen] = useState(false);
   const [profileUserId, setProfileUserId] = useState<string | null>(null);
+  const isMobileView = useIsMobile();
 
   // Group modal state
   const [groupName, setGroupName] = useState("");
@@ -111,7 +113,6 @@ export default function Messages() {
   };
 
   // Mobile layout switch
-  const isMobileView = typeof window !== "undefined" && window.innerWidth < 768;
   const showList = !isMobileView || !activeConvId;
   const showChat = !isMobileView || activeConvId;
 
@@ -251,7 +252,7 @@ export default function Messages() {
           <div className="flex-1 min-h-0 flex flex-col bg-card">
             {activeConvId && activeConv && activeConvInfo ? (
               <>
-                <div className="h-16 border-b flex items-center px-4 gap-3 shrink-0">
+                <div className="min-h-16 border-b flex items-center px-3 sm:px-4 gap-2 sm:gap-3 shrink-0">
                   {isMobileView && (
                     <Button variant="ghost" size="icon" className="-ml-2 mr-1" onClick={() => setActiveConvId(null)}>
                       <X className="w-5 h-5" />
@@ -295,7 +296,7 @@ export default function Messages() {
                                   {format(new Date(msg.timestamp), "h:mm a")}
                                 </span>
                               </div>
-                              <div className="max-w-[85%] border-2 border-primary/30 bg-primary/5 rounded-2xl p-3 space-y-2">
+                              <div className="max-w-[90%] sm:max-w-[85%] border-2 border-primary/30 bg-primary/5 rounded-2xl p-3 space-y-2 break-words">
                                 <p className="text-[10px] uppercase font-bold tracking-wider text-primary flex items-center gap-1">
                                   <Radio className="w-3 h-3" /> Session Invite
                                 </p>
@@ -332,7 +333,7 @@ export default function Messages() {
                               </span>
                             </div>
                             <div
-                              className={`max-w-[75%] rounded-2xl px-4 py-2 text-sm ${
+                              className={`max-w-[85%] sm:max-w-[75%] rounded-2xl px-4 py-2 text-sm break-words ${
                                 isMe
                                   ? "bg-primary text-primary-foreground rounded-br-none"
                                   : "bg-muted text-foreground rounded-bl-none"

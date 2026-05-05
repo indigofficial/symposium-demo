@@ -41,7 +41,7 @@ export default function Sessions() {
   };
 
   return (
-    <div className="container mx-auto p-6 max-w-6xl space-y-8">
+    <div className="container mx-auto px-4 py-6 md:p-6 max-w-6xl space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="font-serif text-3xl md:text-4xl">Study Sessions</h1>
@@ -50,7 +50,7 @@ export default function Sessions() {
         
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
           <Select value={styleFilter} onValueChange={setStyleFilter}>
-            <SelectTrigger className="w-[160px]">
+            <SelectTrigger className="w-full sm:w-[160px]">
               <SelectValue placeholder="Style" />
             </SelectTrigger>
             <SelectContent>
@@ -61,7 +61,7 @@ export default function Sessions() {
           </Select>
 
           <Select value={unitFilter} onValueChange={setUnitFilter}>
-            <SelectTrigger className="w-[140px]">
+            <SelectTrigger className="w-full sm:w-[140px]">
               <SelectValue placeholder="Unit" />
             </SelectTrigger>
             <SelectContent>
@@ -113,7 +113,7 @@ export default function Sessions() {
               variants={container}
               initial="hidden"
               animate="show"
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
             >
               {activeSessions.map(session => (
                 <motion.div key={session.id} variants={item}>
@@ -140,7 +140,7 @@ export default function Sessions() {
               variants={container}
               initial="hidden"
               animate="show"
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
             >
               {scheduledSessions.map(session => (
                 <motion.div key={session.id} variants={item}>

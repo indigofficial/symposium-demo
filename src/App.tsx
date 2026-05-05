@@ -30,14 +30,11 @@ function AppLayout({ children }: { children: React.ReactNode }) {
   }, [currentUser?.id, ensureDemoMatchRequest]);
 
   return (
-    <div className="h-screen bg-background text-foreground flex flex-col overflow-hidden">
+    <div className="h-screen h-dvh bg-background text-foreground flex flex-col overflow-hidden">
       <Navbar />
-      <main className="flex-1 min-h-0 overflow-hidden">
+      <main className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
         {children}
       </main>
-      <div className="shrink-0 border-t bg-muted/30 px-4 py-2 text-center text-xs text-muted-foreground">
-        You are on the University of X network
-      </div>
     </div>
   );
 }

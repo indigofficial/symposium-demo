@@ -16,7 +16,7 @@ export default function Profile() {
   if (!id) return null;
 
   return (
-    <div className="h-full-3.5rem)] flex items-center justify-center p-6">
+    <div className="min-h-full flex items-center justify-center p-6">
       <div className="text-center space-y-4">
         <p className="text-muted-foreground">Viewing profile...</p>
         <Button variant="outline" onClick={handleClose}>Back to Dashboard</Button>

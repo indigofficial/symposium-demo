@@ -39,7 +39,7 @@ export default function LiveSession() {
     if (session && currentUser) {
       setActiveSession(session.id);
     }
-  }, [session?.id, currentUser?.id, setActiveSession]);
+  }, [session, currentUser, setActiveSession]);
 
   if (!session || !currentUser || !host) {
     return <div className="p-8 text-center">Session not found or you don't have access.</div>;
@@ -97,9 +97,9 @@ export default function LiveSession() {
   };
 
   return (
-    <div className="h-[calc(100vh-3.5rem)] flex flex-col bg-background">
+    <div className="min-h-[calc(100dvh-3.5rem)] lg:h-[calc(100dvh-3.5rem)] flex flex-col bg-background overflow-y-auto lg:overflow-hidden">
       {/* Top Bar */}
-      <header className="h-14 border-b flex items-center justify-between px-4 bg-card shrink-0">
+      <header className="min-h-14 border-b flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between px-3 sm:px-4 py-3 sm:py-0 bg-card shrink-0">
         <div className="flex-1 min-w-0 pr-4">
           <div className="flex items-center gap-3">
             <h1 className="font-medium truncate">{session.title}</h1>
@@ -109,7 +109,7 @@ export default function LiveSession() {
           </div>
         </div>
 
-        <div className="flex-1 flex justify-center items-center min-w-0 px-4">
+        <div className="w-full sm:flex-1 flex justify-start sm:justify-center items-center min-w-0 sm:px-4">
           <div className="flex items-center gap-2 max-w-full">
             <span className="text-xs text-muted-foreground uppercase font-bold shrink-0">Objective:</span>
             <span className="text-sm font-medium truncate">{session.objectives[currentObjectiveIdx] || "Study"}</span>
@@ -126,7 +126,7 @@ export default function LiveSession() {
           </div>
         </div>
 
-        <div className="flex-1 flex justify-end gap-2 shrink-0">
+        <div className="w-full sm:flex-1 flex justify-start sm:justify-end gap-2 shrink-0 overflow-x-auto pb-1 sm:pb-0">
           {isHost && isFacilitated && (
             <Button
               variant={everyoneMuted ? "default" : "outline"}
@@ -189,14 +189,14 @@ export default function LiveSession() {
         </div>
       )}
 
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex flex-col lg:flex-row min-h-[680px] lg:min-h-0 overflow-visible lg:overflow-hidden">
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col relative overflow-hidden bg-muted/30">
+        <div className="flex-1 min-h-[520px] lg:min-h-0 flex flex-col relative overflow-hidden bg-muted/30">
 
           {/* Faux Whiteboard */}
-          <div className="absolute inset-0 m-4 bg-card rounded-xl border shadow-sm" style={{ backgroundImage: 'radial-gradient(hsl(var(--muted-foreground)/0.2) 1px, transparent 1px)', backgroundSize: '20px 20px' }}>
+          <div className="absolute inset-0 m-2 sm:m-4 bg-card rounded-xl border shadow-sm" style={{ backgroundImage: 'radial-gradient(hsl(var(--muted-foreground)/0.2) 1px, transparent 1px)', backgroundSize: '20px 20px' }}>
             {/* Toolbar */}
-            <div className="absolute top-4 left-4 bg-background border rounded-lg shadow-sm p-1 flex flex-col gap-1">
+            <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-background border rounded-lg shadow-sm p-1 flex flex-row sm:flex-col gap-1 max-w-[calc(100%-1.5rem)] overflow-x-auto">
               <Button variant={activeTool === "pencil" ? "secondary" : "ghost"} size="icon" onClick={() => setActiveTool("pencil")}><Pencil className="h-4 w-4" /></Button>
               <Button variant={activeTool === "type" ? "secondary" : "ghost"} size="icon" onClick={() => setActiveTool("type")}><Type className="h-4 w-4" /></Button>
               <Button variant={activeTool === "eraser" ? "secondary" : "ghost"} size="icon" onClick={() => setActiveTool("eraser")}><Eraser className="h-4 w-4" /></Button>
@@ -206,13 +206,13 @@ export default function LiveSession() {
             </div>
 
             <div className="w-full h-full flex items-center justify-center pointer-events-none opacity-50">
-              <p className="font-serif text-2xl text-muted-foreground">Collaborative Canvas</p>
+              <p className="font-serif text-xl sm:text-2xl text-muted-foreground">Collaborative Canvas</p>
             </div>
           </div>
 
           {/* Media Controls (centered above video strip) */}
-          <div className="z-20 relative mt-auto flex justify-center pb-2">
-            <div className="flex items-center gap-2 bg-card border rounded-full shadow-md px-2 py-1.5">
+          <div className="z-20 relative mt-auto flex justify-center px-2 pb-2">
+            <div className="flex max-w-full items-center gap-2 overflow-x-auto bg-card border rounded-full shadow-md px-2 py-1.5">
               <Button
                 variant={effectiveMicOn ? "secondary" : "destructive"}
                 size="icon"
@@ -256,9 +256,9 @@ export default function LiveSession() {
           </div>
 
           {/* Video Strip (Bottom) */}
-          <div className="h-40 shrink-0 border-t bg-card p-4 flex gap-4 overflow-x-auto z-10 relative">
+          <div className="h-36 sm:h-40 shrink-0 border-t bg-card p-3 sm:p-4 flex gap-3 sm:gap-4 overflow-x-auto z-10 relative">
             {/* Host Tile */}
-            <div className="relative w-48 h-full bg-muted rounded-lg overflow-hidden border-2 border-primary shrink-0 flex items-center justify-center">
+            <div className="relative w-40 sm:w-48 h-full bg-muted rounded-lg overflow-hidden border-2 border-primary shrink-0 flex items-center justify-center">
               <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full font-medium z-10">Host</div>
               {handsUp.includes(host.id) && (
                 <div className="absolute top-2 right-2 z-10 bg-amber-400 text-amber-950 rounded-full p-1 shadow">
@@ -283,7 +283,7 @@ export default function LiveSession() {
               const pIsMe = p.id === currentUser.id;
               const pMicShown = pIsMe ? effectiveMicOn : (everyoneMuted ? false : i % 2 === 0);
               return (
-                <div key={p.id + i} className="relative w-48 h-full bg-muted rounded-lg overflow-hidden border shrink-0 flex items-center justify-center">
+                <div key={p.id + i} className="relative w-40 sm:w-48 h-full bg-muted rounded-lg overflow-hidden border shrink-0 flex items-center justify-center">
                   {pHandUp && (
                     <div className="absolute top-2 right-2 z-10 bg-amber-400 text-amber-950 rounded-full p-1 shadow">
                       <Hand className="w-3 h-3" />
@@ -308,7 +308,7 @@ export default function LiveSession() {
         </div>
 
         {/* Chat Panel */}
-        <div className="w-80 border-l bg-card flex flex-col shrink-0">
+        <div className="w-full lg:w-80 h-[360px] lg:h-auto border-t lg:border-t-0 lg:border-l bg-card flex flex-col shrink-0">
           <div className="p-3 border-b font-medium text-sm">Session Chat</div>
 
           <ScrollArea className="flex-1 p-4">

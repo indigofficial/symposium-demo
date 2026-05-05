@@ -34,18 +34,24 @@ export default function Dashboard() {
     <motion.div 
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="h-full flex flex-col items-center justify-center p-6 space-y-16 overflow-hidden"
+      className="min-h-full flex flex-col items-center justify-center px-4 py-8 sm:p-6 space-y-5 sm:space-y-6 overflow-y-auto overflow-x-hidden"
     >
-      <div className="text-center space-y-3">
-        <h1 className="text-2xl md:text-4xl font-medium text-muted-foreground tracking-medium">
+      <div className="text-center space-y-2 sm:space-y-3">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-medium text-muted-foreground tracking-medium">
           {format(time, 'h:mm a')}
         </h1>
-        <h2 className="text-5xl md:text-5xl text-foreground/90 font-medium">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl text-foreground/90 font-medium leading-tight">
           {greeting}, {currentUser.firstName}.
         </h2>
       </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
+
+      <div className="w-full max-w-5xl">
+        <div className="w-full border border-border rounded-lg px-3 sm:px-6 py-2 text-center text-[11px] sm:text-xs text-muted-foreground bg-muted/20">
+          You are connected to the University of X Moodle integrated Learning and Networking System
+        </div>
+      </div>
+            
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full max-w-5xl">
         <Card className="bg-card border-card-border shadow-sm">
           <CardHeader className="pb-3">
             <CardTitle className="text-lg font-medium text-muted-foreground">Up Next</CardTitle>
