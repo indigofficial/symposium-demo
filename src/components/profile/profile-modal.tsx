@@ -9,12 +9,13 @@ import {
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
+import { Textarea } from "../ui/textarea";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { Flame, Clock, MapPin, Target, AlertCircle, Lock, Globe, Twitter, Github, Linkedin, Pencil, Users } from "lucide-react";
+import { Flame, Clock, MapPin, Target, AlertCircle, Lock, Globe, Twitter, Github, Linkedin, Pencil, Users, UserPlus, Send } from "lucide-react";
 import { toast } from "../../hooks/use-toast";
 import { FriendsListModal } from "../profile/friends-list-modal";
 import { EditProfileModal } from "../profile/edit-profile-modal";
@@ -32,13 +33,15 @@ export function ProfileModal({ userId, mode = "default", open, onOpenChange }: P
   const [friendsOpen, setFriendsOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [nestedProfileId, setNestedProfileId] = useState<string | null>(null);
+  const [showNoteForm, setShowNoteForm] = useState(false);
+  const [note, setNote] = useState("");
 
   if (!user || !currentUser) return null;
 
   const matchPercent = getMatchPercentage(user.id);
 
   const sharedUnits = (currentUser.units || []).filter(unit =>
-  (user.units || []).includes(unit)
+    (user.units || []).includes(unit)
   );
 
   const sharedStudyTimes = (currentUser.studyTimes || []).filter(time =>
@@ -58,11 +61,10 @@ export function ProfileModal({ userId, mode = "default", open, onOpenChange }: P
     ? 0
     : (user.friends || []).filter(f => (currentUser.friends || []).includes(f)).length;
 
-  // Privacy gate: show limited info if private and not self/friend
   const isHidden = !!user.isPrivate && !isSelf && !isFriend;
 
-  const handleAddFriend = () => {
-    sendMatchRequest(currentUser.id, user.id);
+  const handleSendRequest = () => {
+    sendMatchRequest(currentUser.id, user.id, note.trim() || undefined);
     toast({ title: "Friend request sent", description: `A request was sent to ${user.firstName}.` });
     onOpenChange(false);
   };
@@ -108,7 +110,7 @@ export function ProfileModal({ userId, mode = "default", open, onOpenChange }: P
                 <span className="flex items-center text-orange-500"><Flame className="w-3.5 h-3.5 mr-1" />{user.streak} days</span>
                 <button
                   onClick={() => setFriendsOpen(true)}
-                  className="flex items-center hover:text-foreground transition-colors"
+                  className="flex items-center hover:text-foreground transition-colors cursor-pointer"
                 >
                   <Users className="w-3.5 h-3.5 mr-1" />
                   {friendCount} friend{friendCount === 1 ? "" : "s"}
@@ -268,11 +270,42 @@ export function ProfileModal({ userId, mode = "default", open, onOpenChange }: P
         )}
 
         {!isSelf && mode === "network" && (
-          <div className="flex gap-3 pt-4 border-t mt-2">
-            <Button className="flex-1" onClick={handleAddFriend} disabled={isFriend}>
-              {isFriend ? "Already Friends" : "Add Friend"}
-            </Button>
-            <Button variant="outline" className="flex-1 text-destructive hover:text-destructive border-destructive/20 hover:bg-destructive/5" onClick={handleBlock}>Block</Button>
+          <div className="flex flex-col gap-3 pt-4 border-t mt-2">
+            {isFriend ? (
+              <Button className="flex-1" disabled>Already Friends</Button>
+            ) : showNoteForm ? (
+              <div className="space-y-2">
+                <p className="text-xs text-muted-foreground font-medium">
+                  Add a short note with your request <span className="text-muted-foreground/60">(optional)</span>
+                </p>
+                <Textarea
+                  value={note}
+                  onChange={e => setNote(e.target.value)}
+                  placeholder={`Hi ${user.firstName}, I noticed we both study ${sharedUnits[0] || "similar topics"} — want to work together?`}
+                  className="resize-none text-sm"
+                  rows={3}
+                  maxLength={200}
+                />
+                <p className="text-[10px] text-muted-foreground text-right">{note.length}/200</p>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" className="flex-1" onClick={() => { setShowNoteForm(false); setNote(""); }}>
+                    Back
+                  </Button>
+                  <Button size="sm" className="flex-1" onClick={handleSendRequest}>
+                    <Send className="w-3.5 h-3.5 mr-1.5" />
+                    Send Request
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <Button className="flex-1" onClick={() => setShowNoteForm(true)}>
+                <UserPlus className="w-3.5 h-3.5 mr-1.5" />
+                Add Friend
+              </Button>
+            )}
+            {!showNoteForm && (
+              <Button variant="outline" className="flex-1 text-destructive hover:text-destructive border-destructive/20 hover:bg-destructive/5" onClick={handleBlock}>Block</Button>
+            )}
           </div>
         )}
       </DialogContent>

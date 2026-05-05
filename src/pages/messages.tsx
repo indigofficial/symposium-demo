@@ -163,6 +163,11 @@ export default function Messages() {
                                 {requester.firstName} {requester.lastName}
                               </button>
                               <p className="text-[11px] text-muted-foreground">wants to be your friend</p>
+                              {req.note && (
+                                <p className="text-xs text-foreground/80 bg-muted/60 rounded-md px-2 py-1.5 mt-1.5 italic border-l-2 border-primary/30">
+                                  "{req.note}"
+                                </p>
+                              )}
                               <div className="flex gap-1.5 mt-2">
                                 <Button size="sm" className="h-7 text-xs flex-1" onClick={() => acceptMatchRequest(req.id)}>
                                   <Check className="w-3 h-3 mr-1" /> Accept

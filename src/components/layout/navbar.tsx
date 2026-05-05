@@ -188,9 +188,12 @@ export function Navbar() {
                             <div className="flex-1 min-w-0">
                               <p className="text-sm">
                                 <span className="font-medium">{fromUser.firstName} {fromUser.lastName}</span>
-                                {" "}sent you a match request.
+                                {" "}sent you a friend request.
                               </p>
-                              <p className="text-xs text-muted-foreground mt-0.5">Tap to respond</p>
+                              {req.note && (
+                                <p className="text-xs text-foreground/70 italic mt-0.5 truncate">"{req.note}"</p>
+                              )}
+                              <p className="text-xs text-muted-foreground mt-0.5">Tap to respond in Messages</p>
                             </div>
                           </div>
                         </Link>

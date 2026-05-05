@@ -60,6 +60,7 @@ export interface Session {
   handsUp?: string[];
   everyoneMuted?: boolean;
   feedbacks?: SessionFeedback[];
+  isPrivate?: boolean;
 }
 
 export interface Message {
@@ -84,6 +85,7 @@ export interface MatchRequest {
   fromUserId: string;
   toUserId: string;
   status: "pending" | "accepted" | "ignored";
+  note?: string;
 }
 
 export interface TrendingTopic {
@@ -129,7 +131,7 @@ interface AppState {
   createGroupChat: (name: string, participantIds: string[]) => string;
   inviteToSession: (conversationId: string, sessionId: string, fromUserId: string) => void;
 
-  sendMatchRequest: (fromUserId: string, toUserId: string) => string;
+  sendMatchRequest: (fromUserId: string, toUserId: string, note?: string) => string;
   acceptMatchRequest: (requestId: string) => void;
   ignoreMatchRequest: (requestId: string) => void;
   removeFromNetwork: (userId: string) => void;
@@ -574,12 +576,12 @@ export const useAppStore = create<AppState>()(
         }));
       },
 
-      sendMatchRequest: (fromUserId, toUserId) => {
+      sendMatchRequest: (fromUserId, toUserId, note) => {
         const id = "req_" + Date.now();
         const state = get();
 
         set((s) => ({
-          matchRequests: [...s.matchRequests, { id, fromUserId, toUserId, status: "pending" }],
+          matchRequests: [...s.matchRequests, { id, fromUserId, toUserId, status: "pending", note }],
         }));
 
         const existingConv = state.conversations.find(

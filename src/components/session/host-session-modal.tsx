@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Calendar } from "../ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { format } from "date-fns";
-import { CalendarIcon, X, Plus } from "lucide-react";
+import { CalendarIcon, X, Plus, Globe, Lock } from "lucide-react";
 import { useLocation } from "wouter";
 import { toast } from "../../hooks/use-toast";
 
@@ -32,6 +32,7 @@ export function HostSessionModal({ open, onOpenChange }: HostSessionModalProps) 
   const [time, setTime] = useState("");
   const [style, setStyle] = useState<"Facilitated" | "Collaborative">("Collaborative");
   const [unitCode, setUnitCode] = useState("");
+  const [isPrivate, setIsPrivate] = useState(false);
   
   const [objectiveInput, setObjectiveInput] = useState("");
   const [objectives, setObjectives] = useState<string[]>([]);
@@ -58,6 +59,7 @@ export function HostSessionModal({ open, onOpenChange }: HostSessionModalProps) 
       style,
       unitCode: unitCode.toUpperCase(),
       objectives: objectives.length ? objectives : ["General study"],
+      isPrivate,
     }, false);
     
     toast({ title: "Session started!", description: "You earned 80 XP." });
@@ -68,7 +70,6 @@ export function HostSessionModal({ open, onOpenChange }: HostSessionModalProps) 
   const handleSchedule = () => {
     if (!currentUser || !title || !unitCode || !date || !time) return;
     
-    // Combine date and time
     const [hours, minutes] = time.split(':').map(Number);
     const scheduledDate = new Date(date);
     scheduledDate.setHours(hours || 0, minutes || 0, 0, 0);
@@ -80,6 +81,7 @@ export function HostSessionModal({ open, onOpenChange }: HostSessionModalProps) 
       style,
       unitCode: unitCode.toUpperCase(),
       objectives: objectives.length ? objectives : ["General study"],
+      isPrivate,
     }, true, scheduledDate.toISOString());
     
     toast({ title: "Session scheduled!", description: "You earned 80 XP." });
@@ -119,6 +121,42 @@ export function HostSessionModal({ open, onOpenChange }: HostSessionModalProps) 
                   <SelectItem value="Collaborative">Collaborative (Group Work)</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+
+            {/* Visibility Toggle */}
+            <div className="space-y-2 col-span-2">
+              <Label>Visibility</Label>
+              <div className="flex rounded-md border overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setIsPrivate(false)}
+                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium transition-colors cursor-pointer ${
+                    !isPrivate
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-background text-muted-foreground hover:bg-muted/50"
+                  }`}
+                >
+                  <Globe className="w-4 h-4" />
+                  Public
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsPrivate(true)}
+                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium transition-colors cursor-pointer border-l ${
+                    isPrivate
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-background text-muted-foreground hover:bg-muted/50"
+                  }`}
+                >
+                  <Lock className="w-4 h-4" />
+                  Private
+                </button>
+              </div>
+              {isPrivate && (
+                <p className="text-xs text-muted-foreground">
+                  Only friends you send a session invite to via Messages can join.
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">

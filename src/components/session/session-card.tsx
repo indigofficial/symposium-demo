@@ -2,7 +2,7 @@ import { useAppStore } from "../../lib/store";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { Star, Users, Trash2 } from "lucide-react";
+import { Star, Users, Trash2, Lock } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -63,7 +63,14 @@ export function SessionCard({ sessionId }: SessionCardProps) {
     <Card className="flex flex-col h-full bg-card hover:shadow-md transition-shadow duration-200 border-card-border">
       <CardHeader className="pb-3">
         <div className="flex justify-between items-start mb-2">
-          <Badge variant="outline" className="font-mono text-xs">{session.unitCode}</Badge>
+          <div className="flex items-center gap-1.5">
+            <Badge variant="outline" className="font-mono text-xs">{session.unitCode}</Badge>
+            {session.isPrivate && (
+              <Badge variant="outline" className="text-xs flex items-center gap-1 border-amber-300 text-amber-700 bg-amber-50">
+                <Lock className="w-3 h-3" /> Private
+              </Badge>
+            )}
+          </div>
           <Badge 
             variant={session.style === "Facilitated" ? "default" : "outline"}
             className="text-xs"
@@ -142,6 +149,10 @@ export function SessionCard({ sessionId }: SessionCardProps) {
             isParticipant || isHost ? (
               <Button asChild size="sm">
                 <Link href={`/sessions/live/${session.id}`}>Enter</Link>
+              </Button>
+            ) : session.isPrivate ? (
+              <Button size="sm" variant="outline" disabled className="opacity-60 gap-1.5">
+                <Lock className="w-3 h-3" /> Invite Only
               </Button>
             ) : (
               <Button onClick={handleJoin} size="sm" asChild>
