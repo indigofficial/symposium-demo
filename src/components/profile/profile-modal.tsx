@@ -134,7 +134,7 @@ export function ProfileModal({ userId, mode = "default", open, onOpenChange }: P
                 <div className="space-y-1.5">
                   <p className="font-semibold">{matchPercent}% match</p>
                   <p>
-                    Matched using shared enrolled units, preferred study times, and similar study goals.
+                    The matching score is an average of estimated alignment across all categories in your user profile including bio, current study goals, preferred study times, and social media information made available.
                   </p>
                   {sharedUnits.length > 0 && (
                     <p>

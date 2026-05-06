@@ -185,7 +185,7 @@ export default function Network() {
                             <div className="space-y-1.5">
                               <p className="font-semibold">{u.match}% match</p>
                               <p>
-                                Matched using shared enrolled units, preferred study times, and similar study goals.
+                                The matching score is an average of estimated alignment across all categories in your user profile including bio, current study goals, preferred study times, and social media information made available.
                               </p>
                               {match.sharedUnits.length > 0 && (
                                 <p>
@@ -311,7 +311,7 @@ export default function Network() {
                             <div className="space-y-1.5">
                               <p className="font-semibold">{u.match}% match</p>
                               <p>
-                                Matched using shared enrolled units, preferred study times, and similar study goals.
+                                The matching score is an average of estimated alignment across all categories in your user profile including bio, current study goals, preferred study times, and social media information made available.
                               </p>
                               {match.sharedUnits.length > 0 && (
                                 <p>
