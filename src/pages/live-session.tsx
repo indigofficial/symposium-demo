@@ -57,8 +57,10 @@ export default function LiveSession() {
     .map(pid => users.find(u => u.id === pid))
     .filter(Boolean) as typeof users;
 
-  // If no one joined yet, just show the host and current user
-  const displayParticipants = Array.from(new Set([...participantUsers, currentUser])).filter(u => u.id !== host.id);
+  // If no one joined yet, just show the host and current user (dedupe by id, not object reference)
+  const displayParticipants = Array.from(
+    new Map([...participantUsers, currentUser].map((u) => [u.id, u])).values()
+  ).filter(u => u.id !== host.id);
 
   const raisedHandUsers = handsUp
     .map(uid => users.find(u => u.id === uid))

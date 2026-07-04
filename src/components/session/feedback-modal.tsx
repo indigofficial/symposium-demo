@@ -115,7 +115,7 @@ export function FeedbackModal({ sessionId, mode, open, onClose }: FeedbackModalP
             <p className="text-sm text-muted-foreground uppercase tracking-wider font-semibold">
               {mode === "participant" ? "Goal Completion Score" : "Teaching Effectiveness Score"}
             </p>
-            <p className="text-3xl font-serif text-primary">{averageScore}%</p>
+            <p className="text-3xl font-sans font-bold text-primary">{averageScore}%</p>
             {mode === "host" && (
               <p className="text-xs text-muted-foreground pt-1">Survey respondents: {Math.floor(Math.random() * 5) + 3}</p>
             )}

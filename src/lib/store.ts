@@ -130,6 +130,7 @@ interface AppState {
   sendMessage: (conversationId: string, senderId: string, text: string) => void;
   createGroupChat: (name: string, participantIds: string[]) => string;
   inviteToSession: (conversationId: string, sessionId: string, fromUserId: string) => void;
+  inviteFriendsToSession: (sessionId: string, friendIds: string[], fromUserId: string) => void;
 
   sendMatchRequest: (fromUserId: string, toUserId: string, note?: string) => string;
   acceptMatchRequest: (requestId: string) => void;
@@ -186,7 +187,7 @@ const generateMockUsers = (): User[] => [
   {
     id: "user_3",
     firstName: "Charlie",
-    lastName: "Davis",
+    lastName: "Nguyen",
     email: "charlie@uni.edu",
     bio: "Engineering student.",
     units: ["MATH101", "PHYS101", "COMP1010"],
@@ -291,7 +292,7 @@ const generateMockSessions = (): Session[] => [
     id: "session_3",
     title: "Calculus Homework Help",
     hostId: "user_3",
-    hostName: "Charlie Davis",
+    hostName: "Charlie Nguyen",
     style: "Collaborative",
     unitCode: "MATH101",
     objectives: ["Derivatives", "Integrals"],
@@ -577,6 +578,49 @@ export const useAppStore = create<AppState>()(
         }));
       },
 
+      inviteFriendsToSession: (sessionId, friendIds, fromUserId) => {
+        const state = get();
+        const session = state.sessions.find(s => s.id === sessionId);
+        if (!session) return;
+
+        friendIds.forEach((friendId, i) => {
+          const s = get();
+          const existingConv = s.conversations.find(
+            (c) => !c.isGroup && c.participantIds.includes(fromUserId) && c.participantIds.includes(friendId)
+          );
+
+          const newMessage: Message = {
+            id: "msg_" + Date.now() + "_" + i,
+            senderId: fromUserId,
+            text: `Invited you to "${session.title}"`,
+            timestamp: new Date().toISOString(),
+            type: "session-invite",
+            sessionId,
+          };
+
+          if (existingConv) {
+            set((st) => ({
+              conversations: st.conversations.map((c) =>
+                c.id === existingConv.id ? { ...c, messages: [...c.messages, newMessage] } : c
+              ),
+            }));
+          } else {
+            const convId = "conv_" + Date.now() + "_" + i;
+            set((st) => ({
+              conversations: [
+                ...st.conversations,
+                {
+                  id: convId,
+                  participantIds: [fromUserId, friendId],
+                  isGroup: false,
+                  messages: [newMessage],
+                },
+              ],
+            }));
+          }
+        });
+      },
+
       sendMatchRequest: (fromUserId, toUserId, note) => {
         const id = "req_" + Date.now();
         const state = get();
@@ -792,6 +836,19 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "symposium-state",
+      version: 2,
+      migrate: (persistedState) => {
+        const state = persistedState as AppState;
+        if (state && Array.isArray(state.users)) {
+          const seen = new Set<string>();
+          state.users = state.users.filter((u) => {
+            if (seen.has(u.id)) return false;
+            seen.add(u.id);
+            return true;
+          });
+        }
+        return state;
+      },
     }
   )
 );

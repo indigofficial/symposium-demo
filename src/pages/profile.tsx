@@ -14,6 +14,7 @@ import {
 } from "../components/ui/tooltip";
 import { FriendsListModal } from "../components/profile/friends-list-modal";
 import { toast } from "../hooks/use-toast";
+import mountainBg from "@assets/image_1783172766364.png";
 import {
   ArrowLeft,
   Flame,
@@ -198,16 +199,14 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-full bg-[#0f1621]">
-      {/* Banner / hero */}
+    <div className="min-h-full relative bg-[#0f1621]">
       <div
-        className="relative w-full overflow-hidden"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 60% at 20% 0%, rgba(120,150,200,0.35), transparent), radial-gradient(ellipse 60% 50% at 90% 10%, rgba(90,120,190,0.25), transparent), linear-gradient(180deg, #1b2838 0%, #16202c 60%, #0f1621 100%)",
-        }}
-      >
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-4 pb-20 sm:pb-24">
+        className="fixed inset-0 -z-10 bg-cover bg-center scale-110"
+        style={{ backgroundImage: `url(${mountainBg})`, filter: "blur(18px) brightness(0.55)" }}
+      />
+      {/* Banner / hero */}
+      <div className="relative w-full">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-14 sm:pb-16">
           <button
             onClick={() => setLocation(isSelf ? "/dashboard" : "/network")}
             className="flex items-center gap-1.5 text-white/70 hover:text-white text-sm mb-6 transition-colors"
@@ -261,12 +260,12 @@ export default function Profile() {
             <div className="flex items-center gap-3">
               {!isSelf && (
                 <div className="flex flex-col items-center justify-center px-4 py-2 rounded-xl bg-white/10 border border-white/15">
-                  <span className="text-xl font-serif text-white">{matchPercent}%</span>
+                  <span className="text-xl font-sans font-bold text-white">{matchPercent}%</span>
                   <span className="text-[9px] uppercase font-bold text-white/60 tracking-wider">Match</span>
                 </div>
               )}
               <div className="flex flex-col items-center justify-center px-4 py-2 rounded-xl bg-white/10 border border-white/15">
-                <span className="text-xl font-serif text-white">Lv {user.level}</span>
+                <span className="text-xl text-white"><span className="font-serif">Lv</span> <span className="font-sans font-bold">{user.level}</span></span>
                 <span className="text-[9px] uppercase font-bold text-white/60 tracking-wider">{user.xp} XP</span>
               </div>
 
@@ -292,7 +291,7 @@ export default function Profile() {
       </div>
 
       {/* Body */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 -mt-12 pb-16">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-2 pb-16">
         {isHidden ? (
           <div className="rounded border border-white/10 bg-[#1e2a3a] py-14 text-center space-y-3">
             <Lock className="w-8 h-8 mx-auto text-white/40" />

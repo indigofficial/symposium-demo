@@ -2,15 +2,17 @@ import { useState } from "react";
 import { useAppStore } from "../lib/store";
 import { SessionCard } from "../components/session/session-card";
 import { HostSessionModal } from "../components/session/host-session-modal";
+import { InviteFriendsModal } from "../components/session/invite-friends-modal";
 import { Button } from "../components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { motion } from "framer-motion";
-import { Plus, Radio } from "lucide-react";
+import { Plus, Radio, UserPlus } from "lucide-react";
 import { Link } from "wouter";
 
 export default function Sessions() {
   const { sessions, activeSessionId } = useAppStore();
   const [isHostModalOpen, setIsHostModalOpen] = useState(false);
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const activeSession = activeSessionId ? sessions.find(s => s.id === activeSessionId) : null;
   
   const [styleFilter, setStyleFilter] = useState("All");
@@ -91,13 +93,28 @@ export default function Sessions() {
               <p className="font-medium">{activeSession.title} <span className="text-muted-foreground font-normal">· {activeSession.unitCode}</span></p>
             </div>
           </div>
-          <Button asChild size="sm">
-            <Link href={`/sessions/live/${activeSession.id}`}>
-              <Radio className="w-4 h-4 mr-2" />
-              Return to Session
-            </Link>
-          </Button>
+          <div className="flex items-center gap-2 shrink-0">
+            <Button variant="outline" size="sm" onClick={() => setIsInviteModalOpen(true)} data-testid="button-invite-to-session">
+              <UserPlus className="w-4 h-4 mr-2" />
+              Invite to Session
+            </Button>
+            <Button asChild size="sm">
+              <Link href={`/sessions/live/${activeSession.id}`}>
+                <Radio className="w-4 h-4 mr-2" />
+                Return to Session
+              </Link>
+            </Button>
+          </div>
         </div>
+      )}
+
+      {activeSession && (
+        <InviteFriendsModal
+          sessionId={activeSession.id}
+          sessionTitle={activeSession.title}
+          open={isInviteModalOpen}
+          onOpenChange={setIsInviteModalOpen}
+        />
       )}
 
       <div className="space-y-10">

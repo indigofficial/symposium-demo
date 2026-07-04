@@ -56,7 +56,7 @@ export function Navbar() {
   );
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-[#171a21]">
+    <header className="sticky top-0 z-50 w-full border-b bg-card">
       <div className="container mx-auto flex h-14 items-center justify-between gap-2 px-3 sm:px-4">
         <div className="flex min-w-0 items-center gap-3 md:gap-6">
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
@@ -200,13 +200,6 @@ export function Navbar() {
                       );
                     })
                   )}
-                </div>
-                <div className="px-4 py-2 border-t">
-                  <Link href="/messages" onClick={() => setIsNotifOpen(false)}>
-                    <span className="text-xs text-primary hover:underline cursor-pointer">
-                      View all in Messages
-                    </span>
-                  </Link>
                 </div>
               </PopoverContent>
             </Popover>

@@ -42,7 +42,7 @@ export function SessionFeedbackListModal({ sessionId, open, onOpenChange }: Sess
           <>
             <div className="p-4 bg-muted/40 rounded-lg text-center border">
               <p className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Average Rating</p>
-              <p className="text-3xl font-serif text-primary mt-1">{avg}%</p>
+              <p className="text-3xl font-sans font-bold text-primary mt-1">{avg}%</p>
               <p className="text-xs text-muted-foreground mt-1">{feedbacks.length} response{feedbacks.length === 1 ? "" : "s"}</p>
             </div>
 
