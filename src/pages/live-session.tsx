@@ -194,7 +194,7 @@ export default function LiveSession() {
         <div className="flex-1 min-h-[520px] lg:min-h-0 flex flex-col relative overflow-hidden bg-muted/30">
 
           {/* Faux Whiteboard */}
-          <div className="absolute inset-0 m-2 sm:m-4 bg-card rounded-xl border shadow-sm" style={{ backgroundImage: 'radial-gradient(hsl(var(--muted-foreground)/0.2) 1px, transparent 1px)', backgroundSize: '20px 20px' }}>
+          <div className="absolute inset-0 m-2 sm:m-4 bg-card rounded border shadow-sm" style={{ backgroundImage: 'radial-gradient(hsl(var(--muted-foreground)/0.2) 1px, transparent 1px)', backgroundSize: '20px 20px' }}>
             {/* Toolbar */}
             <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-background border rounded-lg shadow-sm p-1 flex flex-row sm:flex-col gap-1 max-w-[calc(100%-1.5rem)] overflow-x-auto">
               <Button variant={activeTool === "pencil" ? "secondary" : "ghost"} size="icon" onClick={() => setActiveTool("pencil")}><Pencil className="h-4 w-4" /></Button>
@@ -212,7 +212,7 @@ export default function LiveSession() {
 
           {/* Media Controls (centered above video strip) */}
           <div className="z-20 relative mt-auto flex justify-center px-2 pb-2">
-            <div className="flex max-w-full items-center gap-2 overflow-x-auto bg-card border rounded-full shadow-md px-2 py-1.5">
+            <div className="flex max-w-full items-center gap-2 overflow-x-auto bg-card border rounded shadow-md px-2 py-1.5">
               <Button
                 variant={effectiveMicOn ? "secondary" : "destructive"}
                 size="icon"

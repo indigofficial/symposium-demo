@@ -43,7 +43,7 @@ const STUDY_TIMES = ["Early Morning", "Morning", "Afternoon", "Evening", "Late N
 
 function Panel({ title, icon, children, className = "" }: { title?: string; icon?: React.ReactNode; children: React.ReactNode; className?: string }) {
   return (
-    <div className={`rounded-2xl border border-white/10 bg-white/[0.06] backdrop-blur-sm p-4 sm:p-5 ${className}`}>
+    <div className={`rounded border border-white/10 bg-[#1e2a3a] p-4 sm:p-5 ${className}`}>
       {title && (
         <h3 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-white/60 mb-3">
           {icon}
@@ -294,7 +294,7 @@ export default function Profile() {
       {/* Body */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 -mt-12 pb-16">
         {isHidden ? (
-          <div className="rounded-2xl border border-white/10 bg-white/[0.06] backdrop-blur-sm py-14 text-center space-y-3">
+          <div className="rounded border border-white/10 bg-[#1e2a3a] py-14 text-center space-y-3">
             <Lock className="w-8 h-8 mx-auto text-white/40" />
             <p className="text-sm text-white/60">This profile is private. Become friends to see more details.</p>
           </div>

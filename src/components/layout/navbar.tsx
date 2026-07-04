@@ -56,7 +56,7 @@ export function Navbar() {
   );
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-[#171a21]">
       <div className="container mx-auto flex h-14 items-center justify-between gap-2 px-3 sm:px-4">
         <div className="flex min-w-0 items-center gap-3 md:gap-6">
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
@@ -212,7 +212,7 @@ export function Navbar() {
             </Popover>
             
             <Link href={`/profile/${currentUser.id}`}>
-              <div className="flex items-center gap-2 cursor-pointer hover:bg-muted/50 p-1 pr-2 rounded-full md:rounded-md transition-colors ml-1 border border-transparent hover:border-border">
+              <div className="flex items-center gap-2 cursor-pointer hover:bg-muted/50 p-1 pr-2 rounded-md transition-colors ml-1 border border-transparent hover:border-border">
                 <Avatar className="h-8 w-8 border border-border">
                   <AvatarImage src={currentUser.avatar} />
                   <AvatarFallback>{currentUser.firstName[0]}</AvatarFallback>

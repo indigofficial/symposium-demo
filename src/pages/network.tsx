@@ -139,7 +139,7 @@ export default function Network() {
                 </Avatar>
                 <div className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-background bg-green-500" />
               </div>
-              <span className="mt-2 font-medium bg-background/80 backdrop-blur-sm px-2 py-0.5 rounded-md text-sm shadow-sm">
+              <span className="mt-2 font-medium bg-background/90 px-2 py-0.5 rounded-md text-sm shadow-sm">
                 You
               </span>
             </motion.div>
@@ -209,7 +209,7 @@ export default function Network() {
                       </TooltipContent>
                     </Tooltip>
                   </div>
-                  <span className="mt-1 font-medium bg-background/80 backdrop-blur-sm px-1.5 py-0.5 rounded-md text-xs shadow-sm whitespace-nowrap">
+                  <span className="mt-1 font-medium bg-background/90 px-1.5 py-0.5 rounded-md text-xs shadow-sm whitespace-nowrap">
                     {u.firstName}
                   </span>
                 </motion.div>
