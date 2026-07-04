@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { useAppStore } from "../lib/store";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
@@ -6,12 +7,10 @@ import { Badge } from "../components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../components/ui/tooltip";
 import { motion } from "framer-motion";
-import { ProfileModal } from "../components/profile/profile-modal";
 
 export default function Network() {
   const { users, currentUser, getMatchPercentage, removedNetworkUsers, blockedUsers, trendingTopics } = useAppStore();
-  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
-  const [profileMode, setProfileMode] = useState<"default" | "network">("default");
+  const [, setLocation] = useLocation();
   const [unitFilter, setUnitFilter] = useState("All");
   const [displayCount, setDisplayCount] = useState<number>(6);
 
@@ -43,9 +42,8 @@ export default function Network() {
     .map(u => ({ ...u, match: getMatchPercentage(u.id) }))
     .sort((a, b) => b.match - a.match);
 
-  const openProfile = (id: string, mode: "default" | "network") => {
-    setSelectedUserId(id);
-    setProfileMode(mode);
+  const openProfile = (id: string) => {
+    setLocation(`/profile/${id}`);
   };
 
   const getMatchExplanation = (otherUser: typeof users[number]) => {
@@ -132,7 +130,7 @@ export default function Network() {
             <motion.div
               className="absolute z-10 flex flex-col items-center cursor-pointer"
               whileHover={{ scale: 1.05 }}
-              onClick={() => openProfile(currentUser.id, "default")}
+              onClick={() => openProfile(currentUser.id)}
             >
               <div className="relative">
                 <Avatar className="h-20 w-20 border-4 border-primary shadow-lg">
@@ -162,7 +160,7 @@ export default function Network() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: i * 0.1, type: "spring" }}
                   whileHover={{ scale: 1.1, zIndex: 20 }}
-                  onClick={() => openProfile(u.id, "network")}
+                  onClick={() => openProfile(u.id)}
                 >
                   <div className="relative">
                     <Avatar className="h-14 w-14 border-2 border-background shadow-md">
@@ -237,7 +235,7 @@ export default function Network() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.04 }}
                     className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50 cursor-pointer transition-colors"
-                    onClick={() => openProfile(u.id, "default")}
+                    onClick={() => openProfile(u.id)}
                   >
                     <div className="relative">
                       <Avatar className="h-9 w-9 border border-border">
@@ -282,7 +280,7 @@ export default function Network() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.04 }}
                     className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50 cursor-pointer transition-colors"
-                    onClick={() => openProfile(u.id, "default")}
+                    onClick={() => openProfile(u.id)}
                   >
                     <div className="relative">
                       <Avatar className="h-10 w-10 border border-border">
@@ -371,14 +369,6 @@ export default function Network() {
         </div>
       </div>
 
-      {selectedUserId && (
-        <ProfileModal
-          userId={selectedUserId}
-          mode={profileMode}
-          open={!!selectedUserId}
-          onOpenChange={(open) => !open && setSelectedUserId(null)}
-        />
-      )}
     </div>
   );
 }

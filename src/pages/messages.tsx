@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useAppStore } from "../lib/store";
 import { Card } from "../components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
@@ -10,7 +10,6 @@ import { Check, X, Send, Lock, Plus, Users as UsersIcon, Eye, Radio, Calendar } 
 import { format } from "date-fns";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
 import { Checkbox } from "../components/ui/checkbox";
-import { ProfileModal } from "../components/profile/profile-modal";
 import { InviteSessionModal } from "../components/messages/invite-session-modal";
 import { useIsMobile } from "../hooks/use-mobile";
 
@@ -31,7 +30,7 @@ export default function Messages() {
   const [messageInput, setMessageInput] = useState("");
   const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
   const [isInviteOpen, setIsInviteOpen] = useState(false);
-  const [profileUserId, setProfileUserId] = useState<string | null>(null);
+  const [, setLocation] = useLocation();
   const isMobileView = useIsMobile();
 
   // Group modal state
@@ -146,7 +145,7 @@ export default function Messages() {
                         <Card key={req.id} className="p-3 shadow-none border-border bg-card">
                           <div className="flex items-start gap-3">
                             <button
-                              onClick={() => setProfileUserId(requester.id)}
+                              onClick={() => setLocation(`/profile/${requester.id}`)}
                               className="shrink-0"
                               aria-label={`View ${requester.firstName}'s profile`}
                             >
@@ -157,7 +156,7 @@ export default function Messages() {
                             </button>
                             <div className="flex-1 min-w-0">
                               <button
-                                onClick={() => setProfileUserId(requester.id)}
+                                onClick={() => setLocation(`/profile/${requester.id}`)}
                                 className="text-sm font-medium truncate hover:underline text-left block w-full"
                               >
                                 {requester.firstName} {requester.lastName}
@@ -176,7 +175,7 @@ export default function Messages() {
                                   size="sm"
                                   variant="outline"
                                   className="h-7 text-xs px-2"
-                                  onClick={() => setProfileUserId(requester.id)}
+                                  onClick={() => setLocation(`/profile/${requester.id}`)}
                                   aria-label="View profile"
                                 >
                                   <Eye className="w-3 h-3" />
@@ -457,15 +456,6 @@ export default function Messages() {
           recipientName={activeConvInfo.name?.split(" ")[0] || "your friend"}
           open={isInviteOpen}
           onOpenChange={setIsInviteOpen}
-        />
-      )}
-
-      {profileUserId && (
-        <ProfileModal
-          userId={profileUserId}
-          mode="default"
-          open={!!profileUserId}
-          onOpenChange={(open) => { if (!open) setProfileUserId(null); }}
         />
       )}
     </div>

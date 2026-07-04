@@ -92,9 +92,11 @@ function Router() {
         </RequireAuth>
       </Route>
       <Route path="/profile/:id">
-        <RequireAuth>
-          <AppLayout><Profile /></AppLayout>
-        </RequireAuth>
+        {(params) => (
+          <RequireAuth>
+            <AppLayout><Profile key={params.id} /></AppLayout>
+          </RequireAuth>
+        )}
       </Route>
 
       <Route component={NotFound} />
