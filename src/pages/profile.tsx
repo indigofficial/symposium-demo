@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation, Link } from "wouter";
+import { useParams, useLocation } from "wouter";
 import { useAppStore, type SocialLinks } from "../lib/store";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
@@ -30,7 +30,6 @@ import {
   Users,
   UserPlus,
   Send,
-  Check,
   X,
   Save,
   ShieldOff,

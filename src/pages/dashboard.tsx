@@ -46,7 +46,7 @@ export default function Dashboard() {
       (s.interestedUsers || []).includes(currentUser.id)
     ))
     .sort((a, b) => new Date(a.scheduledFor || 0).getTime() - new Date(b.scheduledFor || 0).getTime());
-  const nextSession = upNextSessions[0];
+  // const nextSession = upNextSessions[0];
   const pendingRequests = matchRequests.filter(r => r.toUserId === currentUser.id && r.status === "pending");
 
   const goalDirty = goalDraft !== (currentUser.goal || "");
