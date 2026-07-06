@@ -857,7 +857,7 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "symposium-state",
-      version: 2,
+      version: 3,
       migrate: (persistedState) => {
         const state = persistedState as AppState;
         if (state && Array.isArray(state.users)) {
@@ -867,6 +867,24 @@ export const useAppStore = create<AppState>()(
             seen.add(u.id);
             return true;
           });
+
+          // Refresh the built-in seed users (user_1..user_6) with the latest demo
+          // data (goals, units, etc.) so tuned match percentages stay accurate
+          // even for browsers with an older cached copy of this store.
+          const freshSeedUsers = generateMockUsers();
+          const freshById = new Map(freshSeedUsers.map((u) => [u.id, u]));
+          state.users = state.users.map((u) => {
+            const fresh = freshById.get(u.id);
+            if (!fresh) return u;
+            return { ...fresh, friends: u.friends || fresh.friends, avatar: u.avatar || fresh.avatar };
+          });
+
+          if (state.currentUser) {
+            const freshCurrent = freshById.get(state.currentUser.id);
+            if (freshCurrent) {
+              state.currentUser = { ...freshCurrent, friends: state.currentUser.friends || freshCurrent.friends };
+            }
+          }
         }
         return state;
       },

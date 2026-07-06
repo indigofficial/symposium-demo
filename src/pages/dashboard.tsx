@@ -72,7 +72,7 @@ export default function Dashboard() {
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-medium text-muted-foreground tracking-medium">
           {format(time, 'h:mm a')}
         </h1>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl text-foreground/90 font-medium leading-tight">
+        <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-foreground/90 font-medium leading-tight">
           {greeting}, {currentUser.firstName}.
         </h2>
       </div>
