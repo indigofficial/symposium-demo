@@ -40,11 +40,29 @@ import {
   Clock,
 } from "lucide-react";
 
-const STUDY_TIMES = ["Early Morning", "Morning", "Afternoon", "Evening", "Late Night"];
+const STUDY_TIMES = [
+  "Early Morning",
+  "Morning",
+  "Afternoon",
+  "Evening",
+  "Late Night",
+];
 
-function Panel({ title, icon, children, className = "" }: { title?: string; icon?: React.ReactNode; children: React.ReactNode; className?: string }) {
+function Panel({
+  title,
+  icon,
+  children,
+  className = "",
+}: {
+  title?: string;
+  icon?: React.ReactNode;
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className={`rounded border border-white/10 bg-[#1e2a3a] p-4 sm:p-5 ${className}`}>
+    <div
+      className={`rounded border border-white/10 bg-[#1e2a3a] p-4 sm:p-5 ${className}`}
+    >
       {title && (
         <h3 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-white/60 mb-3">
           {icon}
@@ -56,7 +74,15 @@ function Panel({ title, icon, children, className = "" }: { title?: string; icon
   );
 }
 
-function StatRow({ label, value, onClick }: { label: string; value: React.ReactNode; onClick?: () => void }) {
+function StatRow({
+  label,
+  value,
+  onClick,
+}: {
+  label: string;
+  value: React.ReactNode;
+  onClick?: () => void;
+}) {
   const Comp = onClick ? "button" : "div";
   return (
     <Comp
@@ -132,19 +158,32 @@ export default function Profile() {
   const friendCount = (user.friends || []).length;
   const mutualCount = isSelf
     ? 0
-    : (user.friends || []).filter((f) => (currentUser.friends || []).includes(f)).length;
+    : (user.friends || []).filter((f) =>
+        (currentUser.friends || []).includes(f),
+      ).length;
   const isHidden = !!user.isPrivate && !isSelf && !isFriend;
 
   const displayUnits = isEditing ? units : user.units || [];
-  const displayCompleted = isEditing ? completedUnits : user.completedUnits || [];
+  const displayCompleted = isEditing
+    ? completedUnits
+    : user.completedUnits || [];
   const displayStudyTimes = isEditing ? studyTimes : user.studyTimes || [];
   const displaySocials = isEditing ? socialLinks : user.socialLinks || {};
-  const hasAnySocial = !!(displaySocials.twitter || displaySocials.github || displaySocials.linkedin || displaySocials.website);
+  const hasAnySocial = !!(
+    displaySocials.twitter ||
+    displaySocials.github ||
+    displaySocials.linkedin ||
+    displaySocials.website
+  );
   const ensureUrl = (val: string, prefix: string) =>
-    val.startsWith("http://") || val.startsWith("https://") ? val : prefix + val;
+    val.startsWith("http://") || val.startsWith("https://")
+      ? val
+      : prefix + val;
 
   const toggleStudyTime = (t: string) => {
-    setStudyTimes((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]));
+    setStudyTimes((prev) =>
+      prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t],
+    );
   };
 
   const addUnit = (e: React.KeyboardEvent) => {
@@ -160,14 +199,27 @@ export default function Profile() {
     if (e.key === "Enter" && completedInput.trim()) {
       e.preventDefault();
       const v = completedInput.trim().toUpperCase();
-      if (!completedUnits.includes(v)) setCompletedUnits([...completedUnits, v]);
+      if (!completedUnits.includes(v))
+        setCompletedUnits([...completedUnits, v]);
       setCompletedInput("");
     }
   };
 
   const handleSave = () => {
-    updateUser({ bio, goal, challenge, studyTimes, units, completedUnits, isPrivate, socialLinks });
-    toast({ title: "Profile updated", description: "Your changes have been saved." });
+    updateUser({
+      bio,
+      goal,
+      challenge,
+      studyTimes,
+      units,
+      completedUnits,
+      isPrivate,
+      socialLinks,
+    });
+    toast({
+      title: "Profile updated",
+      description: "Your changes have been saved.",
+    });
     setIsEditing(false);
   };
 
@@ -187,14 +239,20 @@ export default function Profile() {
 
   const handleSendRequest = () => {
     sendMatchRequest(currentUser.id, user.id, note.trim() || undefined);
-    toast({ title: "Friend request sent", description: `A request was sent to ${user.firstName}.` });
+    toast({
+      title: "Friend request sent",
+      description: `A request was sent to ${user.firstName}.`,
+    });
     setShowNoteForm(false);
     setNote("");
   };
 
   const handleBlock = () => {
     blockUser(user.id);
-    toast({ title: "User blocked", description: `${user.firstName} won't appear in your network.` });
+    toast({
+      title: "User blocked",
+      description: `${user.firstName} won't appear in your network.`,
+    });
     setLocation("/network");
   };
 
@@ -202,7 +260,10 @@ export default function Profile() {
     <div className="min-h-full relative bg-[#0f1621]">
       <div
         className="fixed inset-0 -z-10 bg-cover bg-center scale-110"
-        style={{ backgroundImage: `url(${mountainBg})`, filter: "blur(18px) brightness(0.55)" }}
+        style={{
+          backgroundImage: `url(${mountainBg})`,
+          filter: "blur(18px) brightness(0.55)",
+        }}
       />
       {/* Banner / hero */}
       <div className="relative w-full">
@@ -224,11 +285,16 @@ export default function Profile() {
                   className="h-24 w-24 sm:h-28 sm:w-28 rounded-md border-2 border-white/20 shadow-lg object-cover bg-muted"
                   data-testid="img-profile-avatar"
                 />
-                <div className={`absolute -bottom-1 -right-1 h-5 w-5 rounded-full border-2 border-[#1b2838] ${user.online ? "bg-green-500" : "bg-gray-500"}`} />
+                <div
+                  className={`absolute -bottom-1 -right-1 h-5 w-5 rounded-full border-2 border-[#1b2838] ${user.online ? "bg-green-500" : "bg-gray-500"}`}
+                />
               </div>
               <div className="pb-1">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h1 className="font-serif text-2xl sm:text-3xl text-white" data-testid="text-profile-name">
+                  <h1
+                    className="font-serif text-2xl sm:text-3xl text-white"
+                    data-testid="text-profile-name"
+                  >
                     {user.firstName} {user.lastName}
                   </h1>
                   {user.isPrivate && (
@@ -239,9 +305,15 @@ export default function Profile() {
                 </div>
                 <div className="flex items-center gap-3 text-sm text-white/60 mt-1 flex-wrap">
                   {user.timezone && (
-                    <span className="flex items-center"><MapPin className="w-3.5 h-3.5 mr-1" />{user.timezone}</span>
+                    <span className="flex items-center">
+                      <MapPin className="w-3.5 h-3.5 mr-1" />
+                      {user.timezone}
+                    </span>
                   )}
-                  <span className="flex items-center text-orange-400"><Flame className="w-3.5 h-3.5 mr-1" />{user.streak} day streak</span>
+                  <span className="flex items-center text-orange-400">
+                    <Flame className="w-3.5 h-3.5 mr-1" />
+                    {user.streak} day streak
+                  </span>
                   <button
                     onClick={() => setFriendsOpen(true)}
                     className="flex items-center hover:text-white transition-colors"
@@ -250,7 +322,9 @@ export default function Profile() {
                     <Users className="w-3.5 h-3.5 mr-1" />
                     {friendCount} friend{friendCount === 1 ? "" : "s"}
                     {!isSelf && friendCount > 0 && (
-                      <span className="ml-1 text-primary-foreground/80 text-primary">({mutualCount} mutual)</span>
+                      <span className="ml-1 text-primary-foreground/80 text-primary">
+                        ({mutualCount} mutual)
+                      </span>
                     )}
                   </button>
                 </div>
@@ -260,27 +334,50 @@ export default function Profile() {
             <div className="flex items-center gap-3">
               {!isSelf && (
                 <div className="flex flex-col items-center justify-center px-4 py-2 rounded-xl bg-white/10 border border-white/15">
-                  <span className="text-xl font-sans font-bold text-white">{matchPercent}%</span>
-                  <span className="text-[9px] uppercase font-bold text-white/60 tracking-wider">Match</span>
+                  <span className="text-xl font-sans font-bold text-white">
+                    {matchPercent}%
+                  </span>
+                  <span className="text-[9px] uppercase font-bold text-white/60 tracking-wider">
+                    Match
+                  </span>
                 </div>
               )}
               <div className="flex flex-col items-center justify-center px-4 py-2 rounded-xl bg-white/10 border border-white/15">
-                <span className="text-xl text-white"><span className="font-serif">Lv</span> <span className="font-sans font-bold">{user.level}</span></span>
-                <span className="text-[9px] uppercase font-bold text-white/60 tracking-wider">{user.xp} XP</span>
+                <span className="text-xl text-white">
+                  <span className="font-serif">Lv</span>{" "}
+                  <span className="font-sans font-bold">{user.level}</span>
+                </span>
+                <span className="text-[9px] uppercase font-bold text-white/60 tracking-wider">
+                  {user.xp} XP
+                </span>
               </div>
 
               {isSelf ? (
                 isEditing ? (
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm" className="bg-white/5 border-white/20 text-white hover:bg-white/10" onClick={handleCancel} data-testid="button-cancel-edit">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="bg-white/5 border-white/20 text-white hover:bg-white/10"
+                      onClick={handleCancel}
+                      data-testid="button-cancel-edit"
+                    >
                       <X className="w-3.5 h-3.5 mr-1.5" /> Cancel
                     </Button>
-                    <Button size="sm" onClick={handleSave} data-testid="button-save-edit">
+                    <Button
+                      size="sm"
+                      onClick={handleSave}
+                      data-testid="button-save-edit"
+                    >
                       <Save className="w-3.5 h-3.5 mr-1.5" /> Save
                     </Button>
                   </div>
                 ) : (
-                  <Button size="sm" onClick={() => setIsEditing(true)} data-testid="button-edit-profile">
+                  <Button
+                    size="sm"
+                    onClick={() => setIsEditing(true)}
+                    data-testid="button-edit-profile"
+                  >
                     <Pencil className="w-3.5 h-3.5 mr-1.5" /> Edit Profile
                   </Button>
                 )
@@ -295,7 +392,9 @@ export default function Profile() {
         {isHidden ? (
           <div className="rounded border border-white/10 bg-[#1e2a3a] py-14 text-center space-y-3">
             <Lock className="w-8 h-8 mx-auto text-white/40" />
-            <p className="text-sm text-white/60">This profile is private. Become friends to see more details.</p>
+            <p className="text-sm text-white/60">
+              This profile is private. Become friends to see more details.
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
@@ -311,58 +410,97 @@ export default function Profile() {
                     data-testid="input-bio"
                   />
                 ) : (
-                  <p className="text-sm text-white/85 italic" data-testid="text-bio">
+                  <p
+                    className="text-sm text-white/85 italic"
+                    data-testid="text-bio"
+                  >
                     {user.bio ? `"${user.bio}"` : "No bio yet."}
                   </p>
                 )}
               </Panel>
 
-              <Panel title="Study Goals" icon={<Target className="w-3.5 h-3.5" />}>
+              <Panel
+                title="Study Goals"
+                icon={<Target className="w-3.5 h-3.5" />}
+              >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <Label className="text-white/50 text-[11px] uppercase flex items-center gap-1"><Target className="w-3 h-3" /> Goal</Label>
+                    <Label className="text-white/50 text-[11px] uppercase flex items-center gap-1">
+                      <Target className="w-3 h-3" /> Goal
+                    </Label>
                     {isEditing ? (
-                      <Input value={goal} onChange={(e) => setGoal(e.target.value)} className="bg-white/5 border-white/15 text-white" data-testid="input-goal" />
+                      <Input
+                        value={goal}
+                        onChange={(e) => setGoal(e.target.value)}
+                        className="bg-white/5 border-white/15 text-white"
+                        data-testid="input-goal"
+                      />
                     ) : (
-                      <p className="text-sm text-white" data-testid="text-goal">{user.goal || "Not specified"}</p>
+                      <p className="text-sm text-white" data-testid="text-goal">
+                        {user.goal || "Not specified"}
+                      </p>
                     )}
                   </div>
                   <div className="space-y-1.5">
-                    <Label className="text-white/50 text-[11px] uppercase flex items-center gap-1"><AlertCircle className="w-3 h-3" /> Challenge</Label>
+                    <Label className="text-white/50 text-[11px] uppercase flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" /> Challenge
+                    </Label>
                     {isEditing ? (
-                      <Input value={challenge} onChange={(e) => setChallenge(e.target.value)} className="bg-white/5 border-white/15 text-white" data-testid="input-challenge" />
+                      <Input
+                        value={challenge}
+                        onChange={(e) => setChallenge(e.target.value)}
+                        className="bg-white/5 border-white/15 text-white"
+                        data-testid="input-challenge"
+                      />
                     ) : (
-                      <p className="text-sm text-white" data-testid="text-challenge">{user.challenge || "Not specified"}</p>
+                      <p
+                        className="text-sm text-white"
+                        data-testid="text-challenge"
+                      >
+                        {user.challenge || "Not specified"}
+                      </p>
                     )}
                   </div>
                 </div>
               </Panel>
 
-              <Panel title="Preferred Study Times" icon={<Clock className="w-3.5 h-3.5" />}>
+              <Panel
+                title="Preferred Study Times"
+                icon={<Clock className="w-3.5 h-3.5" />}
+              >
                 <div className="flex flex-wrap gap-2">
-                  {isEditing
-                    ? STUDY_TIMES.map((t) => (
-                        <Badge
-                          key={t}
-                          onClick={() => toggleStudyTime(t)}
-                          className={`px-3 py-1 ${studyTimes.includes(t) ? "" : "bg-white/5 text-white/70 border-white/20"}`}
-                          data-testid={`badge-studytime-${t}`}
-                        >
-                          {t}
-                        </Badge>
-                      ))
-                    : displayStudyTimes.length > 0
-                    ? displayStudyTimes.map((t) => (
-                        <Badge key={t} className="bg-white/10 text-white/80 border border-white/15 font-normal">{t}</Badge>
-                      ))
-                    : <span className="text-sm text-white/40">Not specified</span>}
+                  {isEditing ? (
+                    STUDY_TIMES.map((t) => (
+                      <Badge
+                        key={t}
+                        onClick={() => toggleStudyTime(t)}
+                        className={`px-3 py-1 ${studyTimes.includes(t) ? "" : "bg-white/5 text-white/70 border-white/20"}`}
+                        data-testid={`badge-studytime-${t}`}
+                      >
+                        {t}
+                      </Badge>
+                    ))
+                  ) : displayStudyTimes.length > 0 ? (
+                    displayStudyTimes.map((t) => (
+                      <Badge
+                        key={t}
+                        className="bg-white/10 text-white/80 border border-white/15 font-normal"
+                      >
+                        {t}
+                      </Badge>
+                    ))
+                  ) : (
+                    <span className="text-sm text-white/40">Not specified</span>
+                  )}
                 </div>
               </Panel>
 
               <Panel title="Units">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="text-white/50 text-[11px] uppercase flex items-center gap-1"><GraduationCap className="w-3 h-3" /> Enrolled</Label>
+                    <Label className="text-white/50 text-[11px] uppercase flex items-center gap-1">
+                      <GraduationCap className="w-3 h-3" /> Enrolled
+                    </Label>
                     {isEditing && (
                       <Input
                         value={unitInput}
@@ -374,16 +512,34 @@ export default function Profile() {
                       />
                     )}
                     <div className="flex flex-wrap gap-1.5 pt-0.5">
-                      {displayUnits.length > 0 ? displayUnits.map((u) => (
-                        <Badge key={u} className="bg-white/10 text-white/80 border border-white/15 font-mono text-xs flex items-center gap-1">
-                          {u}
-                          {isEditing && <X className="w-3 h-3 cursor-pointer" onClick={() => setUnits(units.filter((x) => x !== u))} />}
-                        </Badge>
-                      )) : <span className="text-sm text-white/40">None listed</span>}
+                      {displayUnits.length > 0 ? (
+                        displayUnits.map((u) => (
+                          <Badge
+                            key={u}
+                            className="bg-white/10 text-white/80 border border-white/15 font-mono text-xs flex items-center gap-1"
+                          >
+                            {u}
+                            {isEditing && (
+                              <X
+                                className="w-3 h-3 cursor-pointer"
+                                onClick={() =>
+                                  setUnits(units.filter((x) => x !== u))
+                                }
+                              />
+                            )}
+                          </Badge>
+                        ))
+                      ) : (
+                        <span className="text-sm text-white/40">
+                          None listed
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-white/50 text-[11px] uppercase flex items-center gap-1"><Trophy className="w-3 h-3" /> Completed</Label>
+                    <Label className="text-white/50 text-[11px] uppercase flex items-center gap-1">
+                      <Trophy className="w-3 h-3" /> Completed
+                    </Label>
                     {isEditing && (
                       <Input
                         value={completedInput}
@@ -395,12 +551,30 @@ export default function Profile() {
                       />
                     )}
                     <div className="flex flex-wrap gap-1.5 pt-0.5">
-                      {displayCompleted.length > 0 ? displayCompleted.map((u) => (
-                        <Badge key={u} className="bg-white/5 text-white/70 border border-white/15 font-mono text-xs flex items-center gap-1">
-                          {u}
-                          {isEditing && <X className="w-3 h-3 cursor-pointer" onClick={() => setCompletedUnits(completedUnits.filter((x) => x !== u))} />}
-                        </Badge>
-                      )) : <span className="text-sm text-white/40">None listed</span>}
+                      {displayCompleted.length > 0 ? (
+                        displayCompleted.map((u) => (
+                          <Badge
+                            key={u}
+                            className="bg-white/5 text-white/70 border border-white/15 font-mono text-xs flex items-center gap-1"
+                          >
+                            {u}
+                            {isEditing && (
+                              <X
+                                className="w-3 h-3 cursor-pointer"
+                                onClick={() =>
+                                  setCompletedUnits(
+                                    completedUnits.filter((x) => x !== u),
+                                  )
+                                }
+                              />
+                            )}
+                          </Badge>
+                        ))
+                      ) : (
+                        <span className="text-sm text-white/40">
+                          None listed
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -412,41 +586,114 @@ export default function Profile() {
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
                         <Twitter className="w-4 h-4 text-white/40 shrink-0" />
-                        <Input placeholder="Twitter / X handle" value={socialLinks.twitter || ""} onChange={(e) => setSocialLinks({ ...socialLinks, twitter: e.target.value })} className="bg-white/5 border-white/15 text-white placeholder:text-white/40" />
+                        <Input
+                          placeholder="Twitter / X handle"
+                          value={socialLinks.twitter || ""}
+                          onChange={(e) =>
+                            setSocialLinks({
+                              ...socialLinks,
+                              twitter: e.target.value,
+                            })
+                          }
+                          className="bg-white/5 border-white/15 text-white placeholder:text-white/40"
+                        />
                       </div>
                       <div className="flex items-center gap-2">
                         <Github className="w-4 h-4 text-white/40 shrink-0" />
-                        <Input placeholder="GitHub username" value={socialLinks.github || ""} onChange={(e) => setSocialLinks({ ...socialLinks, github: e.target.value })} className="bg-white/5 border-white/15 text-white placeholder:text-white/40" />
+                        <Input
+                          placeholder="GitHub username"
+                          value={socialLinks.github || ""}
+                          onChange={(e) =>
+                            setSocialLinks({
+                              ...socialLinks,
+                              github: e.target.value,
+                            })
+                          }
+                          className="bg-white/5 border-white/15 text-white placeholder:text-white/40"
+                        />
                       </div>
                       <div className="flex items-center gap-2">
                         <Linkedin className="w-4 h-4 text-white/40 shrink-0" />
-                        <Input placeholder="LinkedIn handle" value={socialLinks.linkedin || ""} onChange={(e) => setSocialLinks({ ...socialLinks, linkedin: e.target.value })} className="bg-white/5 border-white/15 text-white placeholder:text-white/40" />
+                        <Input
+                          placeholder="LinkedIn handle"
+                          value={socialLinks.linkedin || ""}
+                          onChange={(e) =>
+                            setSocialLinks({
+                              ...socialLinks,
+                              linkedin: e.target.value,
+                            })
+                          }
+                          className="bg-white/5 border-white/15 text-white placeholder:text-white/40"
+                        />
                       </div>
                       <div className="flex items-center gap-2">
                         <Globe className="w-4 h-4 text-white/40 shrink-0" />
-                        <Input placeholder="Personal website URL" value={socialLinks.website || ""} onChange={(e) => setSocialLinks({ ...socialLinks, website: e.target.value })} className="bg-white/5 border-white/15 text-white placeholder:text-white/40" />
+                        <Input
+                          placeholder="Personal website URL"
+                          value={socialLinks.website || ""}
+                          onChange={(e) =>
+                            setSocialLinks({
+                              ...socialLinks,
+                              website: e.target.value,
+                            })
+                          }
+                          className="bg-white/5 border-white/15 text-white placeholder:text-white/40"
+                        />
                       </div>
                     </div>
                   ) : (
                     <div className="flex flex-wrap gap-2">
                       {displaySocials.twitter && (
-                        <a href={ensureUrl(displaySocials.twitter, "https://twitter.com/")} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-white/80 hover:text-white px-2.5 py-1 rounded-lg border border-white/15 bg-white/5 transition-colors">
-                          <Twitter className="w-3.5 h-3.5" /> {displaySocials.twitter}
+                        <a
+                          href={ensureUrl(
+                            displaySocials.twitter,
+                            "https://twitter.com/",
+                          )}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm text-white/80 hover:text-white px-2.5 py-1 rounded-lg border border-white/15 bg-white/5 transition-colors"
+                        >
+                          <Twitter className="w-3.5 h-3.5" />{" "}
+                          {displaySocials.twitter}
                         </a>
                       )}
                       {displaySocials.github && (
-                        <a href={ensureUrl(displaySocials.github, "https://github.com/")} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-white/80 hover:text-white px-2.5 py-1 rounded-lg border border-white/15 bg-white/5 transition-colors">
-                          <Github className="w-3.5 h-3.5" /> {displaySocials.github}
+                        <a
+                          href={ensureUrl(
+                            displaySocials.github,
+                            "https://github.com/",
+                          )}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm text-white/80 hover:text-white px-2.5 py-1 rounded-lg border border-white/15 bg-white/5 transition-colors"
+                        >
+                          <Github className="w-3.5 h-3.5" />{" "}
+                          {displaySocials.github}
                         </a>
                       )}
                       {displaySocials.linkedin && (
-                        <a href={ensureUrl(displaySocials.linkedin, "https://linkedin.com/in/")} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-white/80 hover:text-white px-2.5 py-1 rounded-lg border border-white/15 bg-white/5 transition-colors">
-                          <Linkedin className="w-3.5 h-3.5" /> {displaySocials.linkedin}
+                        <a
+                          href={ensureUrl(
+                            displaySocials.linkedin,
+                            "https://linkedin.com/in/",
+                          )}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm text-white/80 hover:text-white px-2.5 py-1 rounded-lg border border-white/15 bg-white/5 transition-colors"
+                        >
+                          <Linkedin className="w-3.5 h-3.5" />{" "}
+                          {displaySocials.linkedin}
                         </a>
                       )}
                       {displaySocials.website && (
-                        <a href={ensureUrl(displaySocials.website, "https://")} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-white/80 hover:text-white px-2.5 py-1 rounded-lg border border-white/15 bg-white/5 transition-colors">
-                          <Globe className="w-3.5 h-3.5" /> {displaySocials.website}
+                        <a
+                          href={ensureUrl(displaySocials.website, "https://")}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm text-white/80 hover:text-white px-2.5 py-1 rounded-lg border border-white/15 bg-white/5 transition-colors"
+                        >
+                          <Globe className="w-3.5 h-3.5" />{" "}
+                          {displaySocials.website}
                         </a>
                       )}
                     </div>
@@ -457,12 +704,24 @@ export default function Profile() {
               {isEditing && (
                 <Panel>
                   <div className="flex items-start gap-3">
-                    <Checkbox id="private-toggle" checked={isPrivate} onCheckedChange={(c) => setIsPrivate(!!c)} className="mt-1 border-white/30" data-testid="checkbox-private" />
+                    <Checkbox
+                      id="private-toggle"
+                      checked={isPrivate}
+                      onCheckedChange={(c) => setIsPrivate(!!c)}
+                      className="mt-1 border-white/30"
+                      data-testid="checkbox-private"
+                    />
                     <div className="flex-1">
-                      <Label htmlFor="private-toggle" className="flex items-center gap-1.5 text-white">
+                      <Label
+                        htmlFor="private-toggle"
+                        className="flex items-center gap-1.5 text-white"
+                      >
                         <Lock className="w-3.5 h-3.5" /> Private profile
                       </Label>
-                      <p className="text-xs text-white/50 mt-1">Only friends can see your bio, goal, challenge, units, and social links.</p>
+                      <p className="text-xs text-white/50 mt-1">
+                        Only friends can see your bio, goal, challenge, units,
+                        and social links.
+                      </p>
                     </div>
                   </div>
                 </Panel>
@@ -471,10 +730,14 @@ export default function Profile() {
               {!isSelf && (
                 <Panel>
                   {isFriend ? (
-                    <Button className="w-full" disabled>Already Friends</Button>
+                    <Button className="w-full" disabled>
+                      Already Friends
+                    </Button>
                   ) : showNoteForm ? (
                     <div className="space-y-2">
-                      <p className="text-xs text-white/50 font-medium">Add a short note with your request (optional)</p>
+                      <p className="text-xs text-white/50 font-medium">
+                        Add a short note with your request (optional)
+                      </p>
                       <Textarea
                         value={note}
                         onChange={(e) => setNote(e.target.value)}
@@ -483,20 +746,45 @@ export default function Profile() {
                         rows={3}
                         maxLength={200}
                       />
-                      <p className="text-[10px] text-white/40 text-right">{note.length}/200</p>
+                      <p className="text-[10px] text-white/40 text-right">
+                        {note.length}/200
+                      </p>
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm" className="flex-1 bg-white/5 border-white/20 text-white hover:bg-white/10" onClick={() => { setShowNoteForm(false); setNote(""); }}>Back</Button>
-                        <Button size="sm" className="flex-1" onClick={handleSendRequest}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex-1 bg-white/5 border-white/20 text-white hover:bg-white/10"
+                          onClick={() => {
+                            setShowNoteForm(false);
+                            setNote("");
+                          }}
+                        >
+                          Back
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="flex-1"
+                          onClick={handleSendRequest}
+                        >
                           <Send className="w-3.5 h-3.5 mr-1.5" /> Send Request
                         </Button>
                       </div>
                     </div>
                   ) : (
                     <div className="flex flex-col sm:flex-row gap-2">
-                      <Button className="flex-1" onClick={() => setShowNoteForm(true)} data-testid="button-add-friend">
+                      <Button
+                        className="flex-1"
+                        onClick={() => setShowNoteForm(true)}
+                        data-testid="button-add-friend"
+                      >
                         <UserPlus className="w-3.5 h-3.5 mr-1.5" /> Add Friend
                       </Button>
-                      <Button variant="outline" className="flex-1 bg-white/5 border-white/20 text-destructive hover:bg-destructive/10" onClick={handleBlock} data-testid="button-block-user">
+                      <Button
+                        variant="outline"
+                        className="flex-1 bg-white/5 border-white/20 text-destructive hover:bg-destructive/10"
+                        onClick={handleBlock}
+                        data-testid="button-block-user"
+                      >
                         <ShieldOff className="w-3.5 h-3.5 mr-1.5" /> Block
                       </Button>
                     </div>
@@ -510,13 +798,28 @@ export default function Profile() {
               <Panel title="Stats">
                 <StatRow label="Level" value={user.level} />
                 <StatRow label="Experience" value={`${user.xp} XP`} />
-                <StatRow label="Streak" value={
-                  <span className="flex items-center gap-1 text-orange-400"><Flame className="w-3.5 h-3.5" />{user.streak}d</span>
-                } />
-                <StatRow label="Friends" value={friendCount} onClick={() => setFriendsOpen(true)} />
-                {!isSelf && <StatRow label="Mutual friends" value={mutualCount} />}
+                <StatRow
+                  label="Streak"
+                  value={
+                    <span className="flex items-center gap-1 text-orange-400">
+                      <Flame className="w-3.5 h-3.5" />
+                      {user.streak}d
+                    </span>
+                  }
+                />
+                <StatRow
+                  label="Friends"
+                  value={friendCount}
+                  onClick={() => setFriendsOpen(true)}
+                />
+                {!isSelf && (
+                  <StatRow label="Mutual friends" value={mutualCount} />
+                )}
                 <StatRow label="Units enrolled" value={displayUnits.length} />
-                <StatRow label="Units completed" value={displayCompleted.length} />
+                <StatRow
+                  label="Units completed"
+                  value={displayCompleted.length}
+                />
               </Panel>
 
               <Panel title="Badges" icon={<Trophy className="w-3.5 h-3.5" />}>
@@ -535,7 +838,9 @@ export default function Profile() {
                         <GraduationCap className="w-5 h-5" />
                       </div>
                     </TooltipTrigger>
-                    <TooltipContent>{displayCompleted.length} units completed</TooltipContent>
+                    <TooltipContent>
+                      {displayCompleted.length} units completed
+                    </TooltipContent>
                   </Tooltip>
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -543,7 +848,9 @@ export default function Profile() {
                         <BookOpen className="w-5 h-5" />
                       </div>
                     </TooltipTrigger>
-                    <TooltipContent>{displayUnits.length} units enrolled</TooltipContent>
+                    <TooltipContent>
+                      {displayUnits.length} units enrolled
+                    </TooltipContent>
                   </Tooltip>
                   <Tooltip>
                     <TooltipTrigger asChild>
