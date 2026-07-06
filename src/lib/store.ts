@@ -152,11 +152,11 @@ const generateMockUsers = (): User[] => [
     lastName: "Smith",
     email: "alice@uni.edu",
     bio: "Computer Science major, love late night coding.",
-    units: ["COMP1010", "MATH101"],
+    units: ["COMP1010", "MATH101", "COSC100"],
     completedUnits: ["COMP1000", "ENGL101"],
     studyTimes: ["Late Night"],
-    goal: "Pass data structures",
-    challenge: "Procrastination",
+    goal: "Revise for COSC100 exam",
+    challenge: "Understanding relational algebra",
     socialLinks: { github: "alicesmith", twitter: "alice_codes" },
     level: 4,
     xp: 850,
@@ -227,10 +227,10 @@ const generateMockUsers = (): User[] => [
     lastName: "Ford",
     email: "ethan@uni.edu",
     bio: "Business and Economics.",
-    units: ["ECON202", "MATH101"],
+    units: ["COSC100", "MATH101", "COMP1010"],
     completedUnits: ["ECON101"],
     studyTimes: ["Evening", "Late Night"],
-    goal: "Start a company",
+    goal: "Revise for upcoming exams",
     challenge: "Networking",
     level: 1,
     xp: 150,
@@ -518,7 +518,10 @@ export const useAppStore = create<AppState>()(
               : s
           )
         }));
-        get().addXp(10, "Left session feedback");
+        // XP scales with how well the student rated their learning objective completion,
+        // so the levelling system reflects actual progress on session goals, not just attendance.
+        const xpEarned = Math.round(10 + (rating / 100) * 40);
+        get().addXp(xpEarned, "Completed learning objectives");
       },
 
       sendMessage: (conversationId, senderId, text) => {
@@ -625,8 +628,26 @@ export const useAppStore = create<AppState>()(
         const id = "req_" + Date.now();
         const state = get();
 
+        // Demo shortcut: requests sent to Ethan (user_5) auto-accept so the
+        // friend/session flow can be demonstrated live without switching accounts.
+        const autoAccept = toUserId === "user_5";
+
         set((s) => ({
-          matchRequests: [...s.matchRequests, { id, fromUserId, toUserId, status: "pending", note }],
+          matchRequests: [...s.matchRequests, { id, fromUserId, toUserId, status: autoAccept ? "accepted" : "pending", note }],
+          currentUser: autoAccept && s.currentUser && s.currentUser.id === fromUserId
+            ? { ...s.currentUser, friends: Array.from(new Set([...(s.currentUser.friends || []), toUserId])) }
+            : s.currentUser,
+          users: autoAccept
+            ? s.users.map((u) => {
+                if (u.id === fromUserId) {
+                  return { ...u, friends: Array.from(new Set([...(u.friends || []), toUserId])) };
+                }
+                if (u.id === toUserId) {
+                  return { ...u, friends: Array.from(new Set([...(u.friends || []), fromUserId])) };
+                }
+                return u;
+              })
+            : s.users,
         }));
 
         const existingConv = state.conversations.find(

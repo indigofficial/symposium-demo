@@ -14,7 +14,7 @@ import {
 } from "../components/ui/tooltip";
 import { FriendsListModal } from "../components/profile/friends-list-modal";
 import { toast } from "../hooks/use-toast";
-import mountainBg from "@assets/image_1783172766364.png";
+import mountainBg from "../assets/profile-bg-nature.jpg";
 import {
   ArrowLeft,
   Flame,

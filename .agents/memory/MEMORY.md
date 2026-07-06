@@ -1,2 +1,2 @@
 - [Steam-dark theme setup](steam-theme.md) — theme swaps (palette/radius/font) should go through index.css CSS vars, not per-component edits, when the app uses Tailwind v4 @theme inline mapping.
-  
+- [Symposium demo login binding](symposium-demo-login.md) — login must map entered email to existing mock users, else pre-seeded demo data (goals/matches) never appears for the "logged in" user.

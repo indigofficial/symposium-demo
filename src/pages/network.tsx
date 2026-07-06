@@ -9,7 +9,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../components/ui/toolti
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
 import { Button } from "../components/ui/button";
 import { motion } from "framer-motion";
-import { Maximize2, Move } from "lucide-react";
+import { Maximize2 } from "lucide-react";
 
 type WebUser = User & { match: number };
 
@@ -20,7 +20,6 @@ export default function Network() {
   const [displayCount, setDisplayCount] = useState<number>(6);
   const [selectedUser, setSelectedUser] = useState<WebUser | null>(null);
   const graphRef = useRef<HTMLDivElement>(null);
-  const dragOccurred = useRef(false);
 
   if (!currentUser) return null;
 
@@ -32,7 +31,7 @@ export default function Network() {
   const webUsers: WebUser[] = eligibleUsers
     .map(u => ({ ...u, match: getMatchPercentage(u.id) }))
     .sort((a, b) => b.match - a.match)
-    .slice(0, displayCount === -1 ? undefined : displayCount);
+    .slice(0, displayCount);
 
   // Friends list
   const friends = (currentUser.friends || [])
@@ -55,10 +54,6 @@ export default function Network() {
   };
 
   const handleNodeClick = (u: WebUser) => {
-    if (dragOccurred.current) {
-      dragOccurred.current = false;
-      return;
-    }
     setSelectedUser(u);
   };
 
@@ -86,9 +81,7 @@ export default function Network() {
 
   // Graph area grows as more matches are shown, and nodes spread further apart.
   const nodeCount = Math.max(webUsers.length, 1);
-  const graphHeight = displayCount === -1
-    ? Math.min(880, 520 + nodeCount * 14)
-    : displayCount > 12 ? 680
+  const graphHeight = displayCount > 12 ? 680
     : displayCount > 6 ? 580
     : 500;
   const ringRadius = Math.min(320, 130 + nodeCount * 7);
@@ -117,7 +110,6 @@ export default function Network() {
                   <SelectItem value="6">Top 6 Matches</SelectItem>
                   <SelectItem value="12">Top 12 Matches</SelectItem>
                   <SelectItem value="18">Top 18 Matches</SelectItem>
-                  <SelectItem value="-1">All Matches</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -125,13 +117,8 @@ export default function Network() {
             {/* Blurb, anchored bottom-left of the node box */}
             <div className="absolute bottom-3 left-3 z-20 max-w-[240px] bg-background/85 backdrop-blur-sm border border-card-border rounded-md px-3 py-2 shadow-sm">
               <p className="text-[11px] leading-snug text-muted-foreground">
-                Students whose times, units, goals, and challenges align most closely with yours. Drag nodes to rearrange &middot; click a node to preview &middot; hover the % for details.
+                Students whose times, units, goals, and challenges align most closely with yours. Click a node to preview &middot; hover the % for details.
               </p>
-            </div>
-
-            <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1 text-[10px] text-muted-foreground bg-background/70 backdrop-blur-sm px-2 py-1 rounded-md border border-card-border">
-              <Move className="w-3 h-3" />
-              Draggable
             </div>
 
             {/* SVG Network Visualization */}
@@ -160,10 +147,6 @@ export default function Network() {
               <motion.div
                 className="absolute z-10 flex flex-col items-center cursor-pointer"
                 whileHover={{ scale: 1.05 }}
-                drag
-                dragMomentum={false}
-                dragElastic={0.15}
-                onDragStart={() => { dragOccurred.current = true; }}
                 onClick={() => handleNodeClick({ ...currentUser, match: 100 })}
               >
                 <div className="relative">
@@ -194,10 +177,6 @@ export default function Network() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: i * 0.05, type: "spring" }}
                     whileHover={{ scale: 1.1, zIndex: 20 }}
-                    drag
-                    dragMomentum={false}
-                    dragElastic={0.15}
-                    onDragStart={() => { dragOccurred.current = true; }}
                     onClick={() => handleNodeClick(u)}
                     data-testid={`node-user-${u.id}`}
                   >

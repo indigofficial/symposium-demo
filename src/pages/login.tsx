@@ -8,24 +8,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../co
 
 export default function Login() {
   const [, setLocation] = useLocation();
-  const setCurrentUser = useAppStore((state) => state.setCurrentUser);
-  const [email, setEmail] = useState("alice@myuni.edu.au");
+  const { setCurrentUser, users } = useAppStore();
+  const [email, setEmail] = useState("alice@uni.edu");
   const [password, setPassword] = useState("password");
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setCurrentUser({
-      id: "user_" + Date.now(),
-      firstName: "Alice",
-      lastName: "Student",
-      email,
-      level: 1,
-      xp: 0,
-      streak: 0,
-      units: [],
-      online: true,
-      friends: [],
-    });
+    const existingUser = users.find((u) => u.email.toLowerCase() === email.trim().toLowerCase());
+    if (existingUser) {
+      setCurrentUser(existingUser);
+    } else {
+      setCurrentUser({
+        id: "user_" + Date.now(),
+        firstName: "Alice",
+        lastName: "Student",
+        email,
+        level: 1,
+        xp: 0,
+        streak: 0,
+        units: [],
+        online: true,
+        friends: [],
+      });
+    }
     setLocation("/dashboard");
   };
 

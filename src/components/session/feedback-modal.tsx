@@ -55,6 +55,13 @@ export function FeedbackModal({ sessionId, mode, open, onClose }: FeedbackModalP
     setLocation("/dashboard");
   };
 
+  const handleSkip = () => {
+    deleteSession(session.id);
+    clearActiveSession();
+    onClose();
+    setLocation("/dashboard");
+  };
+
   return (
     <Dialog open={open} onOpenChange={(val) => { if (!val) handleSubmit(); }}>
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
@@ -122,10 +129,15 @@ export function FeedbackModal({ sessionId, mode, open, onClose }: FeedbackModalP
           </div>
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex flex-col gap-2">
           <Button onClick={handleSubmit} className="w-full">
             {mode === "participant" ? "Submit & Return to Dashboard" : "Return to Dashboard"}
           </Button>
+          {mode === "participant" && (
+            <Button variant="ghost" onClick={handleSkip} className="w-full text-muted-foreground">
+              Leave without providing feedback
+            </Button>
+          )}
         </div>
       </DialogContent>
     </Dialog>
